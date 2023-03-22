@@ -1,0 +1,3 @@
+[submodule "restricted"]
+	path = restricted
+	url = git@github.com:djankovic/nextcast-restricted.git
