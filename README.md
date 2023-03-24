@@ -9,22 +9,26 @@
 
 ### C4-L1<sup>[1](https://c4model.com)</sup>
 ```
-┌────────────┐
-│   Source   │     ┌──────────┐     ┌───────────┐
-│ (eg. RIST, │ ←─→ │ Nextcast │ ←─→ │  client   │
-│ Shoutcast) │     └──────────┘     |   (HLS)   │
-└────────────┘              ↑       └───────────┘
-                            |       ┌───────────┐
-                            └─────→ │  client   │
-                                    │ (Icecast) │
-                                    └───────────┘
+┌─────────────┐
+│   Source    │     ┌──────────┐     ┌───────────┐
+│ (eg. RIST,  │ ←─→ │ Nextcast │ ←─→ │  client   │
+│ Shoutcast™) │     └──────────┘     |   (HLS)   │
+└─────────────┘             ↑        └───────────┘
+                            |        ┌───────────┐
+                            └──────→ │  client   │
+                                     │ (Icecast) │
+                                     └───────────┘
 ```
 
 
 ## Supported source protocols (ingestion)
 
-1. Icecast/Shoutcast
-2. RIST (Main profile)
+1. Icecast / Shoutcast™
+    - Tested with Shoutcast™ v1.9.8 and v2.5.1
+2. RIST (VSF TR-06-2:2021, Main profile)
+    - Stream encryption (AES-128-CTR / AES-256-CTR) is **required**, eg. as `secret=$PSK` and `aes-type=128|256` parameters in the RIST URL. Unencrypted packets will be discarded.
+    - Tested with [OBS](https://obsproject.com) 29.0, [FFmpeg](https://ffmpeg.org) 5.1, and [libRIST](https://code.videolan.org/rist/librist) 0.2.7
+      - [OBS](https://obsproject.com) >=28.0, [FFmpeg](https://ffmpeg.org) >=4.4, and [libRIST](https://code.videolan.org/rist/librist) >=0.2.0 are also expected to work
 
 ## Supported sink protocols (distribution)
 
