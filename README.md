@@ -9,11 +9,17 @@ A live streaming suite using state of the art protocols to enable low latency an
 - **Built-in web player** that automatically connects to the most reliable and secure supported transport. With Javascript enabled (optional), it includes 100+ visualizations for audio-only streams and displays playback history with cover art from Apple Music®, Spotify®, or Last.fm®.
 - **Currently active and unique listener statistics** for the past month, collected for all distribution protocols.
 
-## Requirements
+## Runtime dependencies
 
-- [PostgreSQL](https://www.postgresql.org) >=13.0
-- [Erlang/OTP](https://www.erlang.org) >=24.0
 - [LibreSSL](https://www.libressl.org) or [OpenSSL](https://www.openssl.org) >=3.0
+- [PostgreSQL](https://www.postgresql.org) >=13.0 with   [TimescaleDB](https://timescale.com/install/latest/self-hosted/) >=2.10
+  - Required only if the `Nextcast.Track` module is explicitly enabled in `config/runtime.exs`
+  - TimescaleDB is a PostgreSQL extension that may need to be manually enabled in PostgreSQL's configuration files depending on the installation method. If `select * from pg_available_extensions;` doesn't list `timescaledb`, refer to [TimescaleDB's installation instructions](https://docs.timescale.com/install/latest/)
+
+## Build requirements
+
+- [Erlang/OTP](https://www.erlang.org) >=24.0
+- [Elixir](https://elixir-lang.org) version listed in `mix.exs`
 
 ## Architecture diagrams
 
