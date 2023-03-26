@@ -21,7 +21,7 @@
     "sass": "^1.58.3"
   },
   "engines": {
-    "node": ">=18",
+    "node": ">=16",
     "pnpm": ">=7"
   },
   "scripts": {
