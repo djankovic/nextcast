@@ -42,4 +42,4 @@ nextcast-*.tar
 
 # Node.js/npm
 npm-debug.log
-/assets/node_modules/
+/node_modules/
