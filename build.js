@@ -27,7 +27,7 @@ const context = await esbuild.context({
   publicPath: "/assets/",
   bundle: true,
   minify: true,
-  sourcemap: "inline",
+  sourcemap: isProduction ? false : "inline",
   splitting: true,
   treeShaking: true,
   metafile: true,
