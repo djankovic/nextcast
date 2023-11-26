@@ -31,9 +31,6 @@ nextcast-*.tar
 # Private keys for HTTP/2
 /priv/*.pem
 
-# Runtime configuration
-/config/runtime.exs
-
 # Ignore assets that are produced by build tools.
 /priv/static/assets/
 
