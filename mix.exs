@@ -4,8 +4,8 @@ defmodule Nextcast.MixProject do
   def project do
     [
       app: :nextcast,
-      version: "0.19.5",
-      elixir: "~> 1.15",
+      version: "0.19.6",
+      elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
     ]
@@ -26,10 +26,8 @@ defmodule Nextcast.MixProject do
       {:cowboy, "~> 2.9"},
       {:plug_cowboy, "~> 2.6"},
       {:jason, "~> 1.4"},
-      {:postgrex, "~> 0.16.5"},
-      {:bcrypt_elixir, "~> 3.0.1"},
-      {:cowlib, "~> 2.12", override: true},
-      {:ranch, "~> 2.1", override: true},
+      {:postgrex, "~> 0.17"},
+      {:bcrypt_elixir, "~> 3.1"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
