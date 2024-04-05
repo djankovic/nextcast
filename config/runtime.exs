@@ -3,11 +3,7 @@ import Config
 config :nextcast, Nextcast.HTTPS,
   transport_opts: [
     ip: {:local, System.get_env("HTTPS_SOCKET", "nextcast.sock")},
-    port: 0,
-    certfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}.pem"]),
-    keyfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}-key.pem"]),
-    alpn_preferred_protocols: ["h2", "http/1.1"],
-    next_protocols_advertised: ["h2", "http/1.1"]
+    port: 0
   ]
 
 config :nextcast, Nextcast.DB,
