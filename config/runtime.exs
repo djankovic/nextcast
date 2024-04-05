@@ -13,7 +13,8 @@ config :nextcast, Nextcast.HTTPS,
 config :nextcast, Nextcast.DB,
   database: System.get_env("DB_NAME", "nextcast"),
   name: Nextcast.DB,
-  parameters: [application_name: "nextcast"]
+  parameters: [application_name: "nextcast"],
+  socket_dir: System.get_env("DB_SOCKDIR")
 
 config :nextcast, Nextcast.Listener,
   address: %{
