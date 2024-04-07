@@ -15,11 +15,12 @@ config :nextcast, Nextcast.TCPServer, [
   protocol: (if config_env() == :prod, do: :cowboy_clear, else: :cowboy_tls),
 ]
 
-config :nextcast, Nextcast.DB,
+config :nextcast, Nextcast.DB, [
   database: System.get_env("DB_NAME", "nextcast"),
   name: Nextcast.DB,
   parameters: [application_name: "nextcast"],
   socket_dir: System.get_env("DB_SOCKDIR")
+]
 
 config :nextcast, Nextcast.StreamSupervisor, [
   %{
@@ -37,12 +38,14 @@ config :nextcast, Nextcast.StreamSupervisor, [
   }
 ]
 
-config :nextcast, Nextcast.ExtendedMetadata,
+config :nextcast, Nextcast.ExtendedMetadata, [
   spotify_token: System.get_env("EXTENDEDMETADATA_SPOTIFY_KEY"),
-  lastfm_key: System.get_env("EXTENDEDMETADATA_LASTFM_KEY")
+  lastfm_key: System.get_env("EXTENDEDMETADATA_LASTFM_KEY"),
+]
 
-config :nextcast, Nextcast.Auth,
-  secret_key_base: System.get_env("AUTH_SECRET_KEY_BASE")
+config :nextcast, Nextcast.Auth, [
+  secret_key_base: System.get_env("AUTH_SECRET_KEY_BASE"),
+]
 
 config :logger, :console,
   level: :info,
