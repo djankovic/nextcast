@@ -1,10 +1,19 @@
 import Config
 
-config :nextcast, Nextcast.HTTPS,
-  transport_opts: [
-    ip: {:local, System.get_env("HTTPS_SOCKET", "nextcast.sock")},
+config :nextcast, Nextcast.TCPServer, [
+  transport: (if config_env() == :prod, do: :ranch_tcp, else: :ranch_ssl),
+
+  transport_opts: (if config_env() in [:prod], do: [
+    ip: {:local, System.get_env("UNIX_SOCKET", "nextcast.sock")},
     port: 0
-  ]
+  ], else: [
+    port: System.get_env("PORT", "8888") |> Integer.parse |> elem(0),
+    certfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}.pem"]),
+    keyfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}-key.pem"])
+  ]),
+
+  protocol: (if config_env() == :prod, do: :cowboy_clear, else: :cowboy_tls),
+]
 
 config :nextcast, Nextcast.DB,
   database: System.get_env("DB_NAME", "nextcast"),
