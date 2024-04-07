@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# PROVIDE: nextcast
+# REQUIRE: networking
+# KEYWORD:
+
+. /etc/rc.subr
+
+name="nextcast"
+rcvar="nextcast_enable"
+load_rc_config $name
+: ${nextcast_enable:=no}
+
+elixir_app_name="${name}"
+workdir="/usr/local/lib/${name}/_build/prod/rel/${elixir_app_name}"
+
+start_cmd="${workdir}/bin/${elixir_app_name} daemon"
+stop_cmd="${workdir}/bin/${elixir_app_name} stop"
+restart_cmd="${workdir}/bin/${elixir_app_name} restart"
+
+run_rc_command "$1"

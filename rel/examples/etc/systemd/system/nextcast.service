@@ -1,0 +1,37 @@
+[Unit]
+Description=Nextcast
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=nextcast
+Group=nextcast
+UMask=0000
+WorkingDirectory=/opt/nextcast
+EnvironmentFile=/opt/nextcast/env
+ExecStartPre=-/usr/bin/rm /opt/nextcast/nextcast.sock
+ExecStart=/opt/nextcast/_build/prod/rel/nextcast/bin/nextcast start
+KillMode=mixed
+Restart=always
+Type=exec
+
+# The following lines leverage SystemD's sandboxing options to provide
+# defense in depth protection at the expense of restricting some flexibility
+# in your setup (e.g. placement of your configuration files) or possibly
+# reduced performance. See systemd.service(5) and systemd.exec(5) for further
+# information.
+
+# NoNewPrivileges=true
+# ProtectHome=true
+# If you want to use 'ProtectSystem=strict' you should whitelist the PIDFILE,
+# any state files and any other files written using 'ReadWritePaths' or
+# 'RuntimeDirectory'.
+# ProtectSystem=true
+# ProtectKernelTunables=true
+# ProtectKernelModules=true
+# ProtectControlGroups=true
+# If your SystemD version supports them, you can add: @reboot, @swap, @sync
+# SystemCallFilter=~@cpu-emulation @keyring @module @obsolete @raw-io
+
+[Install]
+WantedBy=multi-user.target
