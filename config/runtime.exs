@@ -21,15 +21,21 @@ config :nextcast, Nextcast.DB,
   parameters: [application_name: "nextcast"],
   socket_dir: System.get_env("DB_SOCKDIR")
 
-config :nextcast, Nextcast.Listener,
-  address: %{
-    host: System.get_env("LISTENER_HOST"),
-    port: System.get_env("LISTENER_PORT", "443") |> Integer.parse |> elem(0),
-  },
-  history_url: System.get_env("LISTENER_HISTORY_URL")
-
-config :nextcast, Nextcast.RTP,
-  psk: System.get_env("RTP_PSK")
+config :nextcast, Nextcast.StreamSupervisor, [
+  %{
+    key: :system_stream_1,
+    listener: [
+      address: %{
+        host: System.get_env("LISTENER_HOST"),
+        port: System.get_env("LISTENER_PORT", "443") |> Integer.parse |> elem(0),
+      },
+      history_url: System.get_env("LISTENER_HISTORY_URL"),
+    ],
+    rtp: [
+      psk: System.get_env("RTP_PSK"),
+    ],
+  }
+]
 
 config :nextcast, Nextcast.ExtendedMetadata,
   spotify_token: System.get_env("EXTENDEDMETADATA_SPOTIFY_KEY"),
