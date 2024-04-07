@@ -12,7 +12,7 @@ defmodule Nextcast.Application do
   def start(_type, _args) do
     children = [
       {Task.Supervisor, name: :task_sup},
-
+      configured_spec(Nextcast.RTPServer),
       configured_spec(Nextcast.DB),
       configured_spec(Nextcast.Track),
       configured_spec(Nextcast.StreamSupervisor),

@@ -4,15 +4,25 @@ config :nextcast, Nextcast.TCPServer, [
   transport: (if config_env() == :prod, do: :ranch_tcp, else: :ranch_ssl),
 
   transport_opts: (if config_env() in [:prod], do: [
-    ip: {:local, System.get_env("UNIX_SOCKET", "nextcast.sock")},
+    ip: {:local, System.get_env("TCP_UNIX_SOCKET", "nextcast.sock")},
     port: 0
   ], else: [
-    port: System.get_env("PORT", "8888") |> Integer.parse |> elem(0),
+    port: System.get_env("TCP_PORT", "8888") |> Integer.parse |> elem(0),
     certfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}.pem"]),
     keyfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}-key.pem"])
   ]),
 
   protocol: (if config_env() == :prod, do: :cowboy_clear, else: :cowboy_tls),
+]
+
+config :nextcast, Nextcast.RTPServer, [
+  psk: System.get_env("RTP_PSK"),
+  udp_opts: (if config_env() == :prod, do: [
+    ip: {:local, System.get_env("RTP_UNIX_SOCKET", "nextcast-rtp.sock")},
+    port: 0,
+  ], else: [
+    port: System.get_env("RTP_PORT", "8889") |> Integer.parse |> elem(0)
+  ])
 ]
 
 config :nextcast, Nextcast.DB, [
@@ -31,9 +41,6 @@ config :nextcast, Nextcast.StreamSupervisor, [
         port: System.get_env("LISTENER_PORT", "443") |> Integer.parse |> elem(0),
       },
       history_url: System.get_env("LISTENER_HISTORY_URL"),
-    ],
-    rtp: [
-      psk: System.get_env("RTP_PSK"),
     ],
   }
 ]
