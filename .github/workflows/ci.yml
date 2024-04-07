@@ -1,4 +1,7 @@
-on: push
+on:
+  push:
+    paths:
+      - 'mix.exs'
 
 jobs:
   create_release:
