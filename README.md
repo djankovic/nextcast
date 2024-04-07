@@ -12,9 +12,7 @@ A live streaming suite using state of the art protocols to enable low latency an
 ## Runtime dependencies
 
 - [LibreSSL](https://www.libressl.org) >= 3.6.0, [quicTLS](https://github.com/quictls/openssl) >= 1.1.1, or [wolfSSL](https://www.wolfssl.com) >= 5.6.0
-- [PostgreSQL](https://www.postgresql.org) >=13.0 with [TimescaleDB](https://timescale.com/install/latest/self-hosted/) >=2.10
-  - Required only if the `Nextcast.Track` module is explicitly enabled in `config/runtime.exs`
-  - TimescaleDB is a PostgreSQL extension that may need to be manually enabled in PostgreSQL's configuration files depending on the installation method. If `select * from pg_available_extensions;` doesn't list `timescaledb`, refer to [TimescaleDB's installation instructions](https://docs.timescale.com/install/latest/)
+- [PostgreSQL](https://www.postgresql.org) >=16.0
 
 ## Build requirements
 
