@@ -40,3 +40,6 @@ nextcast-*.tar
 # Node.js/npm
 npm-debug.log
 /node_modules/
+
+# Asset manifest
+/lib/_assets.ex
