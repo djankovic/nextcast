@@ -29,7 +29,8 @@ config :nextcast, Nextcast.DB, [
   database: System.get_env("DB_NAME", "nextcast"),
   name: Nextcast.DB,
   parameters: [application_name: "nextcast"],
-  socket_dir: System.get_env("DB_SOCKDIR")
+  socket_dir: System.get_env("DB_SOCKDIR"),
+  pool_size: System.get_env("DB_POOLSIZE", "25") |> Integer.parse |> elem(0),
 ]
 
 config :nextcast, Nextcast.StreamSupervisor, [
