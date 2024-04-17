@@ -48,7 +48,8 @@ config :nextcast, Nextcast.StreamSupervisor, [
 ]
 
 config :nextcast, Nextcast.ExtendedMetadata, [
-  spotify_token: System.get_env("EXTENDEDMETADATA_SPOTIFY_KEY"),
+  spotify_client_id: System.get_env("EXTENDEDMETADATA_SPOTIFY_CLIENT_ID"),
+  spotify_client_secret: System.get_env("EXTENDEDMETADATA_SPOTIFY_CLIENT_SECRET"),
   lastfm_key: System.get_env("EXTENDEDMETADATA_LASTFM_KEY"),
 ]
 
