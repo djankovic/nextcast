@@ -12,8 +12,8 @@ dependencies:
     specifier: 3.0.0-beta.4
     version: 3.0.0-beta.4
   hls.js:
-    specifier: ~1.3.5
-    version: 1.3.5
+    specifier: ^1.5.8
+    version: 1.5.8
   normalize.css:
     specifier: ^8.0.1
     version: 8.0.1
@@ -1337,8 +1337,8 @@ packages:
       function-bind: 1.1.2
     dev: true
 
-  /hls.js@1.3.5:
-    resolution: {integrity: sha512-uybAvKS6uDe0MnWNEPnO0krWVr+8m2R0hJ/viql8H3MVK+itq8gGQuIYoFHL3rECkIpNH98Lw8YuuWMKZxp3Ew==}
+  /hls.js@1.5.8:
+    resolution: {integrity: sha512-hJYMPfLhWO7/7+n4f9pn6bOheCGx0WgvVz7k3ouq3Pp1bja48NN+HeCQu3XCGYzqWQF/wo7Sk6dJAyWVJD8ECA==}
     dev: false
 
   /ignore@5.3.1:
