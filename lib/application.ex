@@ -15,7 +15,7 @@ defmodule Nextcast.Application do
       configured_spec(Nextcast.ExtendedMetadata),
       configured_spec(Nextcast.RTPServer),
       configured_spec(Nextcast.DB),
-      configured_spec(Nextcast.Track),
+      configured_spec(Nextcast.PubSub),
       configured_spec(Nextcast.StreamSupervisor),
       configured_spec(Nextcast.TCPServer)
     ]
