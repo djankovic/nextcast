@@ -11,15 +11,15 @@ defmodule Nextcast.MixProject do
     ]
   end
 
-  # Run "mix help compile.app" to learn about applications.
+  defp extra_applications(:dev), do: [:wx, :observer]
+  defp extra_applications(_), do: []
   def application do
     [
-      extra_applications: [:logger, :inets, :eex, :xmerl],
+      extra_applications: extra_applications(Mix.env()) ++ [:logger, :inets, :eex, :xmerl, :runtime_tools, :crypto],
       mod: {Nextcast.Application, []},
     ]
   end
 
-  # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:certifi, "~> 2.10"},
