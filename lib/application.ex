@@ -13,7 +13,6 @@ defmodule Nextcast.Application do
     children = [
       {Task.Supervisor, name: :task_sup},
       configured_spec(Nextcast.ExtendedMetadata),
-      configured_spec(Nextcast.RTPServer),
       configured_spec(Nextcast.DB),
       configured_spec(Nextcast.PubSub),
       configured_spec(Nextcast.StreamSupervisor),

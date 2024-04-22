@@ -16,16 +16,6 @@ config :nextcast, Nextcast.TCPServer, [
   protocol: (if config_env() == :prod, do: :cowboy_clear, else: :cowboy_tls),
 ]
 
-config :nextcast, Nextcast.RTPServer, [
-  psk: System.get_env("RTP_PSK"),
-  udp_opts: (if config_env() == :prod, do: [
-    ip: {:local, System.get_env("RTP_UNIX_SOCKET", "nextcast-rtp.sock")},
-    port: 0,
-  ], else: [
-    port: System.get_env("RTP_PORT", "8889") |> Integer.parse |> elem(0)
-  ])
-]
-
 config :nextcast, Nextcast.DB, [
   database: System.get_env("DB_NAME", "nextcast"),
   name: Nextcast.DB,
@@ -35,16 +25,21 @@ config :nextcast, Nextcast.DB, [
 ]
 
 config :nextcast, Nextcast.StreamSupervisor, [
-  %{
-    key: :system_stream_1,
-    listener: [
-      address: %{
-        host: System.get_env("LISTENER_HOST"),
-        port: System.get_env("LISTENER_PORT", "443") |> Integer.parse |> elem(0),
-      },
-      history_url: System.get_env("LISTENER_HISTORY_URL"),
+  streams: (if config_env() == :prod, do: [
+    system_stream_1: [
+      listener: [
+        source: {:icy, "tcp://#{System.get_env("LISTENER_HOST")}:#{System.get_env("LISTENER_PORT", "443")}"},
+        history: {:icy_json, System.get_env("LISTENER_HISTORY_URL")},
+      ],
+      broadcasts: [:hls, :icy]
     ],
-  }
+    system_stream_2: [
+      listener: [
+        source: {:rtp, "unix://#{System.get_env("RTP_UNIX_SOCKET", "nextcast-rtp.sock")}?psk=#{System.get_env("RTP_PSK", "")}"}
+      ],
+      broadcasts: [:hls],
+    ]
+  ], else: [])
 ]
 
 config :nextcast, Nextcast.ExtendedMetadata, [
