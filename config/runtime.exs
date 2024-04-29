@@ -31,14 +31,23 @@ config :nextcast, Nextcast.StreamSupervisor, [
         source: {:icy, "tcp://#{System.get_env("LISTENER_HOST")}:#{System.get_env("LISTENER_PORT", "443")}"},
         history: {:icy_json, System.get_env("LISTENER_HISTORY_URL")},
       ],
-      broadcasts: [:hls, :icy]
+      broadcasts: [
+        hls: [
+          target_duration: 4,
+        ],
+        icy: [],
+      ],
     ],
     system_stream_2: [
       listener: [
         source: {:rtp, "unix://#{System.get_env("RTP_UNIX_SOCKET", "nextcast-rtp.sock")}?psk=#{System.get_env("RTP_PSK", "")}"}
       ],
-      broadcasts: [:hls],
-    ]
+      broadcasts: [
+        hls: [
+          target_duration: 4,
+        ],
+      ],
+    ],
   ], else: [])
 ]
 
