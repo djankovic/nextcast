@@ -18,13 +18,14 @@ const outbase = "assets"
 const outdir = relativePath(cwd, resolvePath(realpathSync(wwwRoot), outbase))
 const isProduction = process.env.NODE_ENV === "production"
 
+const publicPath = "/static/assets/";
 const context = await esbuild.context({
   entryPoints,
   outdir,
   outbase,
   entryNames: isProduction ? "[dir]/[name]-[hash]" : undefined,
   format: "esm",
-  publicPath: "/assets/",
+  publicPath,
   bundle: true,
   minify: true,
   sourcemap: isProduction ? false : "inline",
@@ -58,7 +59,7 @@ const context = await esbuild.context({
                 const entryPath = entryPoint.substring(
                   entryPoint.indexOf(outbase) - 1
                 )
-                const outPath = `/${outbase}/${relativePath(outdir, file)}`
+                const outPath = `${publicPath}${relativePath(outdir, file)}`
                 acc[entryPath] = outPath
               }
 
