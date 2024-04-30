@@ -15,32 +15,32 @@ jobs:
         run: |
           echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
           echo "tag=$(echo ${GITHUB_REF#refs/tags/})" >> "$GITHUB_ENV"
-      - uses: 'asdf-vm/actions/setup@v2'
+      - uses: 'asdf-vm/actions/setup@v3'
       - id: 'asdf-cache'
-        uses: 'actions/cache@v3'
+        uses: 'actions/cache@v4'
         with:
           path: '~/.asdf'
           key: asdf-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.tool-versions') }}
       - id: 'mix-cache'
-        uses: 'actions/cache@v3'
+        uses: 'actions/cache@v4'
         with:
           path: 'deps'
           key: mix-${{ hashFiles('.tool-versions') }}-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mix.lock') }}
       - id: 'build-cache'
-        uses: 'actions/cache@v3'
+        uses: 'actions/cache@v4'
         with:
           path: '_build/prod/lib'
           key: build-${{ hashFiles('.tool-versions') }}-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('mix.lock') }}-${{ hashFiles( 'lib/**/*.{ex,eex}', 'config/*.exs', '**/mix.exs' ) }}
       - id: 'npm-cache'
-        uses: 'actions/cache@v3'
+        uses: 'actions/cache@v4'
         with:
           path: '~/.pnpm-store'
           key: pnpm-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - uses: 'asdf-vm/actions/install@v2'
+      - uses: 'asdf-vm/actions/install@v3'
       - run: 'corepack enable && corepack prepare pnpm@latest-8 --activate && pnpm config set store-dir ~/.pnpm-store && pnpm install'
       - run: 'NODE_ENV=production pnpm run build && MIX_ENV=prod mix deps.get && MIX_ENV=prod mix compile'
       - run: 'MIX_ENV=prod mix release --overwrite --no-compile && cd _build/prod/rel/nextcast && tar -czf ../nextcast-${{ env.tag }}-${{ env.sha_short }}.tar.gz *'
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: _build/prod/rel/nextcast-${{ env.tag }}-${{ env.sha_short }}.tar.gz # https://github.com/actions/upload-artifact#limitations
 
