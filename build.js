@@ -1,9 +1,5 @@
 import * as esbuild from "esbuild"
 import { writeFile, realpathSync } from "node:fs"
-import { sassPlugin } from "esbuild-sass-plugin"
-import postcss from "postcss"
-import autoprefixer from "autoprefixer"
-import postcssPresetEnv from "postcss-preset-env"
 import { resolve as resolvePath, relative as relativePath } from "node:path"
 
 const cwd = process.cwd()
@@ -37,14 +33,6 @@ const context = await esbuild.context({
     ".png": "file",
   },
   plugins: [
-    sassPlugin({
-      async transform(source, _resolveDir) {
-        const { css } = await postcss([autoprefixer, postcssPresetEnv({ stage: 0 })]).process(source, {
-          from: undefined,
-        })
-        return css
-      },
-    }),
     {
       name: "outputMap",
       setup: (build) =>
