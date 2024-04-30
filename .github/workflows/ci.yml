@@ -14,7 +14,7 @@ jobs:
       - shell: bash
         run: |
           echo "sha_short=$(git rev-parse --short "$GITHUB_SHA")" >> "$GITHUB_ENV"
-          echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> "$GITHUB_ENV"
+          echo "tag=$(echo ${GITHUB_REF#refs/tags/})" >> "$GITHUB_ENV"
       - uses: 'asdf-vm/actions/setup@v2'
       - id: 'asdf-cache'
         uses: 'actions/cache@v3'
@@ -39,8 +39,8 @@ jobs:
       - uses: 'asdf-vm/actions/install@v2'
       - run: 'corepack enable && corepack prepare pnpm@latest-8 --activate && pnpm config set store-dir ~/.pnpm-store && pnpm install'
       - run: 'NODE_ENV=production pnpm run build && MIX_ENV=prod mix deps.get && MIX_ENV=prod mix compile'
-      - run: 'MIX_ENV=prod mix release --overwrite --no-compile && cd _build/prod/rel/nextcast && tar -czf ../nextcast-${{ env.branch }}-${{ env.sha_short }}.tar.gz *'
+      - run: 'MIX_ENV=prod mix release --overwrite --no-compile && cd _build/prod/rel/nextcast && tar -czf ../nextcast-${{ env.tag }}-${{ env.sha_short }}.tar.gz *'
       - uses: actions/upload-artifact@v3
         with:
-          path: _build/prod/rel/nextcast-${{ env.branch }}-${{ env.sha_short }}.tar.gz # https://github.com/actions/upload-artifact#limitations
+          path: _build/prod/rel/nextcast-${{ env.tag }}-${{ env.sha_short }}.tar.gz # https://github.com/actions/upload-artifact#limitations
 
