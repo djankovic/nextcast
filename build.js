@@ -1,11 +1,10 @@
-/* eslint-env node */
 import * as esbuild from "esbuild"
-import { writeFile, realpathSync } from "fs"
+import { writeFile, realpathSync } from "node:fs"
 import { sassPlugin } from "esbuild-sass-plugin"
 import postcss from "postcss"
 import autoprefixer from "autoprefixer"
 import postcssPresetEnv from "postcss-preset-env"
-import { resolve as resolvePath, relative as relativePath } from "path"
+import { resolve as resolvePath, relative as relativePath } from "node:path"
 
 const cwd = process.cwd()
 const [, , wwwRoot, ...entryPoints] = process.argv
@@ -18,7 +17,7 @@ const outbase = "assets"
 const outdir = relativePath(cwd, resolvePath(realpathSync(wwwRoot), outbase))
 const isProduction = process.env.NODE_ENV === "production"
 
-const publicPath = "/static/assets/";
+const publicPath = "/static/assets/"
 const context = await esbuild.context({
   entryPoints,
   outdir,
@@ -40,10 +39,9 @@ const context = await esbuild.context({
   plugins: [
     sassPlugin({
       async transform(source, _resolveDir) {
-        const { css } = await postcss([
-          autoprefixer,
-          postcssPresetEnv({ stage: 0 }),
-        ]).process(source, { from: undefined })
+        const { css } = await postcss([autoprefixer, postcssPresetEnv({ stage: 0 })]).process(source, {
+          from: undefined,
+        })
         return css
       },
     }),
@@ -51,22 +49,17 @@ const context = await esbuild.context({
       name: "outputMap",
       setup: (build) =>
         build.onEnd((result) => {
-          const ob = Object.keys(result?.metafile?.outputs || {}).reduce(
-            (acc, file) => {
-              const { entryPoint } = result.metafile.outputs[file]
+          const ob = Object.keys(result?.metafile?.outputs || {}).reduce((acc, file) => {
+            const { entryPoint } = result.metafile.outputs[file]
 
-              if (entryPoint) {
-                const entryPath = entryPoint.substring(
-                  entryPoint.indexOf(outbase) - 1
-                )
-                const outPath = `${publicPath}${relativePath(outdir, file)}`
-                acc[entryPath] = outPath
-              }
+            if (entryPoint) {
+              const entryPath = entryPoint.substring(entryPoint.indexOf(outbase) - 1)
+              const outPath = `${publicPath}${relativePath(outdir, file)}`
+              acc[entryPath] = outPath
+            }
 
-              return acc
-            },
-            {}
-          )
+            return acc
+          }, {})
 
           result.outputMap = ob
         }),
@@ -82,14 +75,10 @@ const context = await esbuild.context({
 defmodule Nextcast.Assets do
   def output_map do
     %{
-      ${Object.entries(result.outputMap).reduce(
-        (acc, [entryPath, outPath], ix, arr) => {
-          const delimiter = arr.length - 1 === ix ? "" : `,\n`
-          acc += `"${entryPath}" => "${outPath}"${delimiter}`
-          return acc
-        },
-        ""
-      )}
+      ${Object.entries(result.outputMap).reduce((acc, [entryPath, outPath], ix, arr) => {
+        const delimiter = arr.length - 1 === ix ? "" : ",\n"
+        return `${acc}"${entryPath}" => "${outPath}"${delimiter}`
+      }, "")}
     }
   end
 end
@@ -101,7 +90,7 @@ end
                 console.info(`[build.js] Wrote ${manifestPath}`)
                 resolve()
               })
-            })
+            }),
         ),
     },
   ],
