@@ -48,6 +48,21 @@ config :nextcast, Nextcast.StreamSupervisor, [
         ],
       ],
     ],
+    # system_stream_3: [
+    #   listener: [
+    #     source: {:mpegts, "tls://localhost:8443"},
+    #     cacertfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}-ca.pem"]),
+    #     certs_keys: [%{
+    #       certfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}.pem"]),
+    #       keyfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}-key.pem"]),
+    #     }],
+    #   ],
+    #   broadcasts: [
+    #     hls: [
+    #       target_duration: 4,
+    #     ],
+    #   ],
+    # ],
   ], else: [])
 ]
 

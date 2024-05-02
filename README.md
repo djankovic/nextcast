@@ -43,6 +43,9 @@ A live streaming suite using state of the art protocols to enable low latency an
     - Stream encryption (AES-128-CTR / AES-256-CTR) is **required**, eg. as `secret=$PSK` and `aes-type=128|256` parameters in the RIST URL. Unencrypted packets will be discarded.
     - Tested with [OBS](https://obsproject.com) 29.0, [FFmpeg](https://ffmpeg.org) 5.1, and [libRIST](https://code.videolan.org/rist/librist) 0.2.7
       - [OBS](https://obsproject.com) >=28.0, [FFmpeg](https://ffmpeg.org) >=4.4, and [libRIST](https://code.videolan.org/rist/librist) >=0.2.0 are also expected to work
+3. MPEG-TS over TLS over TCP
+    - Tested with [FFmpeg](https://ffmpeg.org) 7.0, eg. `ffmpeg -i ... -f mpegts -cert_file $CERTFILE -key_file $KEYFILE tls://$IP:PORT`
+    - A client certificate is mandatory
 
 ## Supported sink protocols (distribution)
 
