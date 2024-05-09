@@ -231,3 +231,11 @@ iTunes.h
 VOX.h
 # from /Applications/Spotify.app
 Spotify.h
+
+# Generate with automake && \
+# CXXFLAGS="-ObjC++ -framework Foundation -framework AVFoundation -framework ScriptingBridge -DHAVE_LIBFDK_AAC=1" \
+# CPPFLAGS="-DHAVE_LIBFDK_AAC=1" \
+# LDFLAGS="-L/opt/homebrew/lib -lintl -lfdk-aac" \
+# ./configure
+config.h
+configure
