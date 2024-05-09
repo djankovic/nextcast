@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>de.danielnoethen.butt</id>
+  
+  <name>butt</name>
+  <summary>Icecast and Shoutcast streaming client</summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  
+  <description>
+    <p>
+      butt (broadcast using this tool) is an easy to use, multi OS streaming tool. It supports SHOUTcast and Icecast and runs on Linux, Mac OS X and Windows (64 Bit only since version 0.1.20). The main purpose of butt is to stream live audio data from your computers Mic or Line input to a Shoutcast or Icecast server. If you want you can also record your session.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">butt.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://danielnoethen.de/butt/butt_ubuntu.png</image>
+    </screenshot>
+  </screenshots>
+</component>

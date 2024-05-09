@@ -1,0 +1,487 @@
+Version 0.1.41 (2024-03-17)
+---------------------------
+* Add support for controlling BUTT via MIDI CC messages
+* EQ and compressor can now be enabled independently for the stream and record path
+* You can now use %N as a placeholder for the current server name in your record file/path
+* Prevent BUTT from being disconnected by the server when using FLAC and the audio signal is 100% silent 
+* The signal and silence detection can now by activated/deactivated with a checkbox instead of simply setting the value to 0
+* Add -L parameter to get a list of available audio devices
+* The ICY name and ICY description now support the same placeholders as the record file/path (activate the "expand variables" checkbox)
+* Add Arabic language support (Thanks to Magd)
+* Fix an issue that could lead BUTT to freeze on startup if no internet connection is available
+* Overall stability improvements
+
+Version 0.1.40 (2023-11-24)
+---------------------------
+* Support higher bitrates for AAC, Vorbis and Opus
+* Add support for Plexamp on Linux
+* Add Dutch language support (thanks to Timothy)
+* Fix an issue with audio device names that contain special characters
+* Fix possible buffer underflow when the connection to a shoutcast server fails
+
+Version 0.1.39 (2023-09-20)
+---------------------------
+* Fix a bug that can cause the listener count to no longer be updated
+* Fix a bug that can cause the split record file function to stop working
+* Fix a bug that can cause butt not to reconnect after a connection loss
+* Fix a bug that can cause undefined behaviour
+* Clear song name if song file is empty
+ 
+
+Version 0.1.38 (2023-08-05)
+---------------------------
+* Users can now define a custom window title
+* Add option to set a delay between automatic reconnects 
+* Add option to use the older Icecast SOURCE protocol instead of the newer PUT protocol
+* Increase robustness of the config file importer
+* Increase robustness of the show listeners function
+* Use green instead of yellow to indicate a valid streaming connection
+* Fix memory leak when using Icecast and showing the number of listeners
+* Fix UI drawing issues 
+* Fix issue with the main window size on Windows 11
+* Fix issues with the tray agent on Windows
+
+Version 0.1.37 (2022-12-24)
+---------------------------
+* Add support for a second audio device
+* Streaming and recording volume can be set independently
+* Add support for icecast-kh listener statistics
+* Highlight connect and record buttons when active
+* Restore window size if "Remember main window position" is active
+* Increase size of slider knobs 
+* Start with default values in case the config file is damaged
+* Always overwrite existing files when recording is started automatically or via butt client
+* Do not stop recording if a butt client sends a disconnect command while butt is offline
+* Fix an issue were butt mistakenly says "Connecting..."
+* Fix memory leak if "Show listeners" is activate
+
+Version 0.1.36 (2022-10-03)
+---------------------------
+* Number of current listeners can be displayed on the LCD (works only with original Icecast and Shoutcast implementations)
+* Fix connection issue with AIS streaming server
+* Fix connection issue with Icecast servers older than version 2.4.0
+* Fix issue with Shoutcast if mountpoint is already in use
+
+
+Version 0.1.35 (2022-06-19)
+---------------------------
+* Gain slider can be disabled to prevent inadvertently changing the volume 
+* Audio device initialization can be skipped by holding down CTRL during startup
+* Fix crash if audio device can not be opened
+* Fix crash if no default audio device can be found 
+* Fix wrong password detection for certain liquidsoap Shoutcast implementations 
+* Fix crash of command client and command server when very long song names are specified
+
+Version 0.1.34 (2022-04-21)
+---------------------------
+* Added equalizer presets
+* Added Spanish translation
+* Use 32 bit float for internal audio processing instead of 16 bit integer
+* FLAC can now be broadcasted and recorded as 16 bit or 24 bit
+* WAV can now be recorded as 16 bit, 24 bit or 32 bit
+* Massively improved client/server implementation for butt commands
+* Fixed bug that caused overwriting the first wav samples of a recording
+* Fixed read song name from Music.app for MacOS >= 11.0
+* Fixed record folder creation if folder contains format variables
+* butt commands can now also be sent via UDP
+* Added new fields to the server status message:
+  - stream seconds, stream kBytes
+  - record seconds, record kBytes
+  - volume left/right
+  - current song
+  - record path
+
+Version 0.1.33 (2022-02-06)
+---------------------------
+* Windows: You can broadcast what's playing on your computer (audio device must support WASAPI)
+* Windows/Linux: New butt-client for controlling running butt instances (Thanks to Hossam)
+* Added support for higher samplerates (88.2 kHz and 96 kHz)
+* Added Portuguese (Brazil) translation (Thanks to Bruno)
+* Added signal and silence detection flags to the status information 
+* Time thresholds for signal detection can be changed via control commands (Thanks to Hossam)
+* Format place holders (%Y %m %d etc.) can also be used in the folder name
+* Song title update support for OPUS
+* Fixed wrong file size in wav header
+* Fixed compilation if --disable-ssl or --disable-aac was passed to ./configure  
+
+Version 0.1.32 (2021-10-28)
+---------------------------
+* Radio.co stations can now be easily added to butt
+* Advanced codec settings for mp3, aac, ogg/vorbis and opus can now be adjusted
+* The recordings folder may now contain environment variables like ~, $HOME and %USERPROFILE%
+* Fixed issue with characters like $,%,&,§ in the song name 
+* Fixed connection issue in case the server domain has IPv4+6 addresses but Icecast is only listening on IPv4
+* Fixed missing song duration information in FLAC recordings
+
+Version 0.1.31 (2021-07-12)
+---------------------------
+* A delay can now be added to the automatic song title update
+* Increased equalizer from 5 to 10 frequency bands
+* Fixed positioning issues on multi screen setups
+* Maximum number of supported audio devices has been increased from 100 to 256
+
+Version 0.1.30 (2021-05-14)
+---------------------------
+* Added support for IPv6 
+* Added French translation
+* Right click on a slider knob brings up an input field where you can type in the slider value with the keyboard
+* The selected audio device can now be remembered by device name instead by device id
+* You can now rescan for new audio devices manually (no butt restart needed anymore after plugging in a new audio device)
+* Holding the shift key during butt startup allows you to start with a fresh configuration file
+* Updated Portaudio to version v19.7.0
+* Windows: Added support for WASAPI audio driver
+* MacOS: Updated FLTK to version 1.3.6 
+* MacOS: Native support for Apple Silicon (arm64) 
+
+Version 0.1.29 (2021-03-28)
+---------------------------
+* Added a new tool (butt Agent) which helps to minimize butt to tray and much more (Big thanks to Ivan Radolovic)
+* Added an indicator to the compressor which lights up if the threshold is exceeded
+* Added "Aggressive Mode" to the compressor. If activated, the signal power for threshold detection is not averraged
+* Added new command line options: -q (quit) -n (split recording) -u <songname> (update song name)
+* Added donation addresses for Bitcoin, Monero and Dash
+* Fixed crash when butt can not find any input channels
+* Fixed crash when reading song names from an UTF-8 formatted file that contains a BOM 
+* Fixed issue with icecast-kh14+ when connecting to a mountpoint which is already in use
+* Fixed issue if both checkboxes "start recording after launch" and "start recording when connected" are checked
+* Fixed butt.desktop file. Icon was not shown on GNOME panel
+* Attack and Release compressor labels now have 2 decimal places instead of only 1
+* butt does not send bitrate information to the icecast server anymore if FLAC is used 
+* butt now searches for a free command server port if default port is already in use
+* butt can now be started in minimized state
+* The recording file name can now contain any well known date format specifier 
+* The window class name has been renamed from FLTK to butt_FLTK
+
+Version 0.1.28 (2021-02-07)
+---------------------------
+* Fixed compressor issues
+* Fixed song update when using Strawberry audio player
+* The order of song update from an music app can be changed from "Title - Artist" to "Artist - Title"
+* Increased accuracy of recording split timer
+* VU-meter appearance can be changed to solid colors for better readability
+* Log window can be vertically resized
+* Windows: Changed default installation folder to %LOCALAPPDATA%\butt instead of %LOCALAPPDATA\butt-<version>
+
+
+Version 0.1.27 (2020-12-26)
+---------------------------
+* Fixed loading of AAC codec selection from configuration file
+* Fixed crash when using opus with a samplerate not equal to 48000 Hz
+
+Version 0.1.26 (2020-12-24)
+---------------------------
+* Added ASIO support
+* Added support for multi-channel audio devices
+* Added multi-language support (i18n) 
+* Added German translation
+* Added option to force reconnection regardless of the server response
+* Added support for Strawberry audio player (Thanks to Stefan S.)
+* Added config parameter to disable dithering (set disable_dithering=1 in cfg file) 
+* Fixed possible crash if server is not reachable
+* Fixed possible crash when reconnecting
+* Fixed possible crash when using FLAC and song update
+* Fixed unwanted rounding of compressor values
+* Fixed overwriting of a DSP setting if it was set to -1.0
+* Improved CPU usage 
+* Improved mono/stereo handling
+* Improved overall song update implementation
+* Compiles on FreeBSD (Thanks to Per G. and Tobias C. B.)
+
+
+Version 0.1.25 (2020-10-26)
+---------------------------
+* Added the ability to extend the song name with a prefix and a suffix
+* Fixed issue with automatic song update from text files 
+* Fixed recording in FLAC 
+
+Version 0.1.24 (2020-10-14)
+---------------------------
+* VU-meter has been redesigned
+* Fixed issues with usernames that contain special characters 
+* The port of the command server can be specified via command line 
+* Commands can be received via network
+* It is possible to connect to a particular streaming server when sending the connect command
+* You can ask a butt instance about its current status with the -S command
+* butt can automatically check for updates after launch 
+* Update of song name works with FLAC 
+* Thresholds for signal detection can be specified
+* Added -h command line option to get an overview of all available commands
+* Updated the manual 
+
+Version 0.1.23 (2020-09-27)
+---------------------------
+* Fixed crash if the server is not reachable (e.g. unstable internet connections)
+* Fixed issue with transfering song meta data from music apps to butt (MacOS)
+* Improved handling of mic permissions dialog on MacOS
+
+Version 0.1.22 (2020-07-09)
+---------------------------
+* Added Dynamic Range Compressor (thanks to Thomas P.)
+* Added ability to check for new versions
+* butt can now be controlled via command line 
+* Replaced experimental portaudio version with the stable portaudio version
+* Fixed issue with stereo audio when using the Equalizer (thanks to Thomas P.)
+* Fixed traffic calculation when using OPUS
+* Fixed issue with OPUS encoding under some circumstances
+
+Version 0.1.21 (2020-05-26)
+---------------------------
+* Streaming and recording can now be started automatically if an audio signal is present
+* Fixed reconnection issue on unreliable network connections. Should now behave like 0.1.19 again
+* wav recordings can now be up to 4 GB large
+* Removed advanced section from the Audio tab. Buffer time can still be set in the configuration file if you need to
+
+Version 0.1.20 (2020-04-21)
+---------------------------
+* Added SSL/TLS support for icecast
+* Recording can now automatically be stopped if the user disconnects from the server
+* Fixed icecast connection issue (mostly occurring on mobile internet connections like 4G/LTE)
+* Fixed wrong password detection for liquidsoap based setups
+* Fixed configuration export on MacOS
+* Fixed logfile selection on MacOS
+* Song name is not updated on reconnect anymore if the manual song name input field has been cleared
+* Upgraded FLTK to version 1.3.5
+
+Version 0.1.19 (2019-12-30)
+---------------------------
+* The song name can now be read from the last line instead from the first line of a file
+* Streaming and recording can now be automatically stopped after silence has been detected 
+* The last window position can be remembered. Useful when running multiple instances
+* butt can now be started with hidden info window
+* The vu-meter runs smoother and needs less cpu 
+* VU-meter peak hold is only active for the red light
+* Closing butt while streaming or recording must be confirmed now
+* Changes are now saved without asking for confirmation when closing the app
+* Removed a new line character from the server name in the title bar
+* Fixed recceiving song information from iTunes/Music in MacOS Catalina
+* Fixed wrong counting of sent bytes when using AAC
+
+
+Version 0.1.18 (2019-05-12)
+---------------------------
+* Added support for automatic recording after starting butt
+* Enabled AAC afterburner (improves audio quality)
+* Fixed issue with configure.ac and s390x architecture
+* Updated the FSF address in COPYING
+* AAC libs are not delivered with the setup files anymore (read the manual on how to activate AAC support again)
+
+
+Version 0.1.17 (2018-12-27)
+---------------------------
+* Added support for FLAC streaming (icecast only)
+* Added 5-band equalizer (thanks to Melchor Garau Madrigal)
+* Added the ability to read song informations from several apps on MacOS and Linux (thanks to Melchor Garau Madrigal)
+* Window title is automatically renamed to the connected server (useful when running multiple instances)
+* Fixed connection issue with airtime
+* Fixed integer overflow when gain is set too high
+* Fixed compilation error on ubuntu 18
+* Changed color of windows icon from black to yellow. So people using Win10 can now find butt in their black taskbar ;-)
+
+
+Version 0.1.16 (2017-09-17)
+---------------------------
+* Fixed compatibility issues with shoutcast v2.5.5.732 
+* Replaced portaudio by newest stable version v190600_20161030
+* When using AAC+ the best AAC profile for the current bitrate is selected automatically +
+  AAC+v2: bitrate < 48kBit/s				(aac_aot = 29) +
+  AAC+v1: 48 kBit/s \<= bitrate < 96kBit/s	(aac_aot = 5) +
+  AAC-LC: bitrate >= 96kBit/s				(aac_aot = 2) +
+* You can force the AAC codec to a specific profile by setting 
+  aac_overwrite_aot = 1 and aac_aot to the appropriate aot value {2,5,29} in buttrc
+
+
+Version 0.1.15 (2016-05-28)
+---------------------------
+* Added AAC+ support
+* Added a "Split now" button to instantly start a new recording file
+* Improved look&feel on retina displays on OSX
+* Improved compatibility with proxies/load balancers (thanks to boyska)
+* Fixed handling of newline characters when reading the song name file
+* Fixed evlauation of time/date variables when automatic file splitting is enabled
+* Fixed compatibility with airtime servers
+* Fixed ogg and opus support for ShoutCast 
+
+Version 0.1.14 (2014-12-27)
+---------------------------
+* Added FLAC support for recording 
+* Added Opus support (thanks to oneman)
+* Added logfile support (thanks to mikko)
+* Added support for more variables in the filename (%H %M %S) (thanks to mikko)
+* Automatic file splitting can be synced to full hour now (thanks to mikko) 
+* LCD info can automatically rotate every 5 seconds now (thanks to mikko)
+* Added ability to change audio buffer size
+* Uncluttered LCD (thanks to mikko)
+* File extension of record filename gets automatically updated now
+* Dropped support of different samplerate/channels for stream and record
+* Resorted settings elements/widgets
+* Removed possible memleaks
+* Connecting to an unreachable server does not freeze the GUI anymore
+* Fixed icecast and shoutcast meta data handling
+* ;ade update song from file more robust
+* "update song name manually" reacts on Enter button now
+
+Version 0.1.13 (2014-05-02)
+---------------------------
+* Has an icon now! - Thanks to Subrat (ipapuna) Nayak
+* Added support for lower bitrates (24k, 16k, 8k)
+* Added support for user defined configuration path e.g. "butt -c <path_to_config>"
+* Added support for user names in Icecast
+* Added gain slider. This slider multiplies the audio input samples with the given factor
+* Added .manifest file to disable the VirtualStore on Windows Vista and higher
+* Added the ability to automatically split the recording every 'n' minutes
+* Added feature for importing and exporting configuration files
+* Compiles with Xcode 5 on OS X Mavericks
+* Compiles with traditional GNU autoconf/automake environment on linux and mingw
+* Improved robustness against faulty config files 
+* Improved compatibility to ShoutCast v2 servers
+* Improved look&feel
+* Fixed samplerate issues
+* Fixed mono playback/recording 
+* Changed data volume information vom kBytes to MBytes
+* Changed default recording path to users home folder
+* Sends audio information (bitrate etc.) to Icecast server - Thanks to Dominik Durner
+* Reimplemented VU-Meter with peak hold 
+* Comes with as an ubuntu package
+* Windows: can be installed as user without admin rights 
+* Windows: uninstallation process also removes the configuration file
+* Instead of canceling the automatic song update in case the given file is not
+readable, butt now tries to reread the file every 5 seconds
+
+Version 0.1.12 (2010-04-10)
+---------------------------
+* butt is now able to connect automatically after startup
+* Shortened time between connect attempts (fixes Shouted.FM connection problems)
+* Improved wrong password detection for shoutcast	
+
+Version 0.1.11-2 (2008-12-14)
+-----------------------------
+* Fixed display info after automatic reconnection
+
+Version 0.1.11-1 (2008-11-09)
+-----------------------------
+* Fixed segfault if there is no '.' in the filename
+
+Version 0.1.11 (2008-10-26)
+---------------------------
+* Fixed unintended disconnects
+* Fixed recording problems
+* Removed buffer overrun messages
+* Recording can be now stopped with the stop-button
+* Replaced pcm recording by wav recording
+* Recording as ogg is now possible 
+* Added "stay on top" checkbox
+* Fixed possible crash when changing mp3 settings while streaming
+
+Version 0.1.10 (2008-05-25)
+---------------------------
+* Removed xrun "led". Instead the msg window informs the user about overruns
+* Added dB values to the vu-meter
+* Fixed bitrate/samplerate selection for ogg
+* Network backend works with non-blocking sockets now
+* libshout is not needed anymore
+* Songname can be updated from a textfile now
+* More samplerates are supported now
+* Fixed samplerate selection problems
+* Fixed crash when connecting to icecast server on MacOS 10.4
+* Fixed crash when changing the server type from shoutcast to icecast
+* Some cosmetic changes (buttons, LEDs)
+
+Version 0.1.9 (2008-04-10)
+--------------------------
+* Minor GUI makeup
+* Made butt more verbose
+* Fixed possible segfault when trying to EDIT stream info
+* Fixed automatic reconnection
+* Filenames can be indexed with the %i variable now
+* Renamed "rec not until connected" checkbox to "start rec. when connected"
+* Added orange record icon for "armed" state ("start rec. when connected" = 1)
+* butt starts recording as soon as connected, when in "armed" state
+
+Version 0.1.8 (2008-03-30)
+--------------------------
+
+* Text/bg color can be changed in the [GUI] tab
+* Removed the "Config saved" popup message
+* Added pcm recording
+* Improoved record handling
+* The config menu is more user friendly now
+* Fixed crash when connection loss
+* The user may select the samplerate now
+* The config window can be attached to the main window now
+* Fixed bitrate and codec ShoutCast info
+
+Version 0.1.7rc1 (2008-01-04)
+-----------------------------
+* butt runs on MacOS 10.4 and 10.5 now!
+* Added recording time to the display info
+* Fixed bug with '&' in the song string
+* Changing the display mode works only when connected now
+* Added a checkbox which lets the user decide if the recording should start
+right after selecting the output file or when connected
+* Added a msg box which ask the user if he wants to stop the recording
+when disconnecting
+
+
+Version 0.1.6 (2007-12-08)
+---------------------------
+* Added status symbols to the display
+* Recording runs with a seperate thread now!
+* Added a button for showing/hiding the server password
+
+Version 0.1.5 (2007-11-22)
+---------------------------
+* Minor GUI changes
+* Fixed streaming/recording with mp3 320kb/s
+* Fixed segfault in Fl_ILM216.cpp
+* The user may change the display colors now (right click on the display)
+* The "connecting" info on the display updates faster now
+* Changed default display colors to white/blue
+
+Version 0.1.5rc1 (2007-11-16)
+-----------------------------
+* Replaced ALSA by PortAudio -> OSS is supported now
+* Ported butt to Microsoft Windows (tested with win2k and win xp)
+* butt reminds the user about unsaved changes when closing now
+* Starting the recording is possible at any time now
+* Added mono encoding for OGG
+* Improved some GUI stuff
+* Improved CPU usage
+
+Version 0.1.4rc2 (2007-11-03)
+-----------------------------
+* butt should compile on more machines now
+
+Version 0.1.4rc1 (2007-11-01)
+-----------------------------
+* Added IceCast support (ogg and mp3)
+* Added ./configure script
+* butt is now able to send the "Current Song" value to the ShoutCast/IceCast server
+* Changed stereo mode from joint-stereo to real-stereo
+* Code cleanup
+
+Version 0.1.3 (2007-10-08)
+---------------------------
+* Bugfix: butt crashed if you press "apply" in the server/icy tab without
+having an server/ICY-entry
+* Bugfix: butt crashed if you change the bitrate without having an ICY-entry
+* Bugfix: there was some uncommented code in the [DEL]-server callback-routine
+which shouldn't be uncommented 
+* Facelift: if you delete all server/ICY-entries, the input fields in the server/ICY
+still showed the values of the last server/ICY-entry
+
+Version 0.1.2 (2007-10-07)
+--------------------------
+* Added a GUI for configuring butt
+* Comments behind config entries are not allowed anymore.
+* Removed the network init part. It was nonsense
+* Fixed mono playblack
+* Fixed recording problems
+* ICY entries can now be empty without causing butt to crash
+* butt shows the real port in its "connecting to..."-info line now and the "pseudeo" port in parenthesis
+* Fixed a bug which causes pcm data loss in some cases
+
+Version 0.1.1 (2007-09-16)
+--------------------------
+* Added recording feature 
+* Fixed seg fault on startup when compiled with gcc-4.1.2
+* Fixed seg fault when encoding with high bitrates

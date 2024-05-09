@@ -1,0 +1,15 @@
+# List of source files which contain translatable strings.
+src/AskForMicPermission.m
+src/butt.cpp
+src/cfg.cpp
+src/FLTK/flgui.cpp
+src/FLTK/fl_timer_funcs.cpp
+src/FLTK/fl_callbacks.cpp
+src/FLTK/flgui.cpp
+src/FLTK/fl_funcs.cpp
+src/icecast.cpp
+src/lame_encode.cpp
+src/port_audio.cpp
+src/port_midi.cpp
+src/shoutcast.cpp
+src/tls.cpp

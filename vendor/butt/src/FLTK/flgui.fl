@@ -1,0 +1,2924 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0308
+i18n_type 1
+i18n_include "../../gettext.h"
+i18n_function gettext
+header_name {.h}
+code_name {.cpp}
+class flgui {open
+} {
+  decl {bool info_visible;} {public local
+  }
+  decl {Fl_Text_Buffer *info_buffer;} {public local
+  }
+  Function {flgui()} {open
+  } {
+    Fl_Window window_main {
+      callback {window_main_close_cb(true);}
+      xywh {914 300 430 395} type Double hide resizable
+      code0 {\#include "FL/Fl_My_Double_Window.H"}
+      code1 {\#include <stdlib.h> 
+\#include "config.h"}
+      code2 {\#include "flgui.h"
+\#include "fl_timer_funcs.h"}
+      code3 {window_main->size_range(430, 155, 430); window_main->is_main_window = true;}
+      class Fl_My_Double_Window size_range {430 276 430 0}
+    } {
+      Fl_Box label_volume {
+        label {Streaming volume}
+        xywh {154 119 135 16} labelsize 10 align 20
+      }
+      Fl_Tabs vu_tabs {
+        callback {vu_tabs_cb();}
+        xywh {140 110 196 74} box GTK_THIN_UP_BOX selection_color 47 labelsize 13
+      } {
+        Fl_Group {} {
+          label Streaming open
+          xywh {150 128 177 47} labelsize 11
+        } {}
+        Fl_Group {} {
+          label Recording open
+          xywh {150 130 185 50} labelsize 11 hide
+        } {}
+      }
+      Fl_Box lcd {
+        callback {ILM216_cb();}
+        tooltip {press left mouse to toggle lcd info} xywh {10 10 410 95} box ENGRAVED_BOX color 32 selection_color 41
+        code0 {\#include "Fl_ILM216.h"}
+        code1 {\#include "fl_callbacks.h"}
+        code3 {\#include "cfg.h"}
+        class Fl_ILM216
+      }
+      Fl_Button button_connect {
+        label {@>}
+        callback {button_connect_cb();}
+        tooltip {connect to server} xywh {102 148 30 30} box ENGRAVED_BOX down_box ENGRAVED_BOX shortcut 0x40063 color 48 selection_color 40 labelfont 1 labelsize 21 labelcolor 7
+      }
+      Fl_Button button_disconnect {
+        label {@square}
+        callback {button_disconnect_cb(true);}
+        tooltip {disconnect from server} xywh {62 148 30 30} box ENGRAVED_BOX down_box ENGRAVED_BOX shortcut 0x40064 color 48 selection_color 40 labelfont 1 labelsize 12 labelcolor 7
+      }
+      Fl_Button button_record {
+        label {@circle}
+        callback {button_record_cb(true);}
+        tooltip {start/stop recording} xywh {10 148 30 30} box ENGRAVED_BOX down_box ENGRAVED_BOX shortcut 0x40072 color 48 selection_color 40 labelfont 1 labelsize 12 labelcolor 1
+      }
+      Fl_Button button_info {
+        label {Show log}
+        callback {button_info_cb();}
+        tooltip {show/hide info window} xywh {340 163 80 15} box ENGRAVED_BOX shortcut 0x40076 color 48 labelsize 10
+      }
+      Fl_Group vumeter {
+        xywh {156 135 174 43} box BORDER_BOX
+        code0 {\#include "Fl_vu_meter.h"}
+        class VUMeter
+      } {}
+      Fl_Box invisible_tab_box {
+        xywh {140 108 197 76}
+        code0 {\#include "FL/Fl_My_Invisible_Box.H"}
+        class Fl_My_Invisible_Box
+      }
+      Fl_Text_Display info_output {
+        xywh {0 212 430 184} box EMBOSSED_BOX textfont 4 textsize 15 resizable
+      }
+      Fl_Button button_cfg {
+        label Settings
+        callback {button_cfg_cb();}
+        tooltip {show/hide config window} xywh {340 135 80 22} box ENGRAVED_BOX shortcut 0x40066 color 48 labelsize 11
+      }
+      Fl_Box label_n24dB {
+        label {-24 dB}
+        xywh {10 190 30 16} labelsize 10
+      }
+      Fl_Slider slider_gain {
+        label Gain
+        user_data CB_CALLED_BY_USER
+        callback {slider_gain_cb(v);}
+        tooltip {Master Gain} xywh {50 191 335 15} type {Horz Knob} box NO_BOX labeltype NO_LABEL align 0 minimum -24 maximum 24 step 0.1 slider_size 0.1
+        code0 {\#include "FL/Fl_My_Value_Slider.H"}
+        code1 {slider_gain->default_value = 0.0;}
+        class Fl_My_Value_Slider
+      }
+      Fl_Box label_p24dB {
+        label {+24 dB}
+        xywh {390 190 30 16} labelsize 10
+      }
+      Fl_Button radio_co_logo {
+        callback {fl_open_uri("https://radio.co/?utm_source=butt&utm_medium=app");}
+        image {../xpm/radio_co_badge.png} xywh {237 27 128 61} box NO_BOX
+      }
+      Fl_Box label_current_listeners {
+        label {Listeners: 99999}
+        xywh {211 83 165 16} labelcolor 7 align 24
+      }
+      Fl_Button button_mixer {
+        label Mixer
+        callback {button_mixer_cb();}
+        tooltip {show/hide mixer window} xywh {10 113 122 22} box ENGRAVED_BOX shortcut 0x40066 color 48 labelsize 11
+      }
+    }
+    Fl_Window window_cfg {
+      label {butt settings}
+      callback {if(window_cfg->shown())
+{
+    window_cfg->hide();
+    Fl::remove_timeout(&cfg_win_pos_timer);
+}} open
+      xywh {1362 238 430 640} type Double
+      code0 {\#include "FL/Fl_My_Double_Window.H"}
+      code1 {\#include "fl_timer_funcs.h"}
+      class Fl_My_Double_Window size_range {430 640 430 640} visible
+    } {
+      Fl_Tabs Settings {open
+        xywh {-1 0 436 641} selection_color 45
+      } {
+        Fl_Group {} {
+          label Main
+          xywh {0 20 434 620} when 6
+        } {
+          Fl_Group {} {
+            label {Server Settings}
+            xywh {50 55 328 155} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Choice choice_cfg_act_srv {
+              label Server
+              callback {choice_cfg_act_srv_cb();}
+              tooltip {Server to connect to} xywh {58 75 310 20} down_box BORDER_BOX align 5
+            } {}
+            Fl_Button {} {
+              label ADD
+              callback {button_cfg_add_srv_cb();} selected
+              tooltip {Add server} xywh {58 100 80 20} box ENGRAVED_BOX
+            }
+            Fl_Button button_cfg_edit_srv {
+              label EDIT
+              callback {button_cfg_edit_srv_cb();}
+              tooltip {Edit selected server} xywh {173 100 80 20} box ENGRAVED_BOX
+            }
+            Fl_Button button_cfg_del_srv {
+              label DEL
+              callback {button_cfg_del_srv_cb();}
+              tooltip {Delete selected server} xywh {288 100 80 20} box ENGRAVED_BOX
+            }
+            Fl_Choice choice_cfg_act_icy {
+              label {Stream Infos}
+              callback {choice_cfg_act_icy_cb();} open
+              tooltip {Stream info that shall be used} xywh {58 155 310 20} down_box BORDER_BOX align 5
+            } {}
+            Fl_Button {} {
+              label ADD
+              callback {button_cfg_add_icy_cb();}
+              tooltip {Add stream info} xywh {58 180 80 20} box ENGRAVED_BOX
+            }
+            Fl_Button button_cfg_edit_icy {
+              label EDIT
+              callback {button_cfg_edit_icy_cb();}
+              tooltip {Edit stream info} xywh {173 180 80 20} box ENGRAVED_BOX
+            }
+            Fl_Button button_cfg_del_icy {
+              label DEL
+              callback {button_cfg_del_icy_cb();}
+              tooltip {Delete stream info} xywh {288 180 80 20} box ENGRAVED_BOX
+            }
+          }
+          Fl_Group {} {
+            label {Log File}
+            xywh {50 237 326 40} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Input input_log_filename {
+              callback {input_log_filename_cb();}
+              tooltip {Log file path} xywh {58 245 280 25} align 5
+            }
+            Fl_Button {} {
+              callback {button_cfg_log_browse_cb();}
+              tooltip {Select log file} image {../xpm/folder.png} xywh {344 245 25 25} box ENGRAVED_BOX
+            }
+          }
+          Fl_Group {} {
+            label Configuration
+            xywh {50 304 326 50} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Button {} {
+              label {Import...}
+              callback {button_cfg_import_cb();}
+              tooltip {Import settings from config file} xywh {58 315 70 28} box ENGRAVED_BOX
+            }
+            Fl_Button {} {
+              label {&Save}
+              callback {cfg_write_file(NULL);}
+              tooltip {Save settings} xywh {166 315 95 28} box ENGRAVED_BOX
+            }
+            Fl_Button {} {
+              label {Export...}
+              callback {button_cfg_export_cb();}
+              tooltip {export settings} xywh {298 315 70 28} box ENGRAVED_BOX
+            }
+          }
+          Fl_Group {} {
+            label Updates
+            xywh {50 485 326 50} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Button {} {
+              label {Check now}
+              callback {button_cfg_check_for_updates_cb();}
+              tooltip {Check if a new version is available} xywh {261 497 105 28} box ENGRAVED_BOX
+            }
+            Fl_Check_Button check_update_at_startup {
+              label {Check at startup}
+              callback {check_update_at_startup_cb();}
+              tooltip {Check for updates at start} xywh {56 504 145 15} down_box DOWN_BOX
+            }
+          }
+          Fl_Group group_agent {
+            label {Butt Agent}
+            xywh {50 385 326 75} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Check_Button check_start_agent {
+              label {Start agent at startup}
+              callback {check_start_agent_cb();}
+              tooltip {Start the butt agent when butt starts} xywh {56 400 157 15} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_minimize_to_tray {
+              label {Minimize butt to tray}
+              callback {check_minimize_to_tray_cb();}
+              tooltip {Minimize butt to tray} xywh {56 430 150 15} down_box DOWN_BOX
+            }
+            Fl_Button {} {
+              label {Start Agent}
+              callback {button_start_agent_cb();}
+              tooltip {Start the butt agent now} xywh {261 391 105 28} box ENGRAVED_BOX
+            }
+            Fl_Button {} {
+              label {Stop Agent}
+              callback {button_stop_agent_cb();}
+              tooltip {Stop the butt agent} xywh {261 425 105 28} box ENGRAVED_BOX
+            }
+          }
+        }
+        Fl_Group {} {
+          label Audio
+          xywh {0 20 434 620} hide
+        } {
+          Fl_Group {} {
+            label {Main Audio Settings} open
+            xywh {50 55 326 245} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Choice choice_cfg_dev {
+              label {Primary Audio Device}
+              callback {choice_cfg_dev_cb();} open
+              tooltip {Select your primary sound card device} xywh {58 190 170 20} down_box FLAT_BOX align 5
+            } {}
+            Fl_Choice choice_cfg_channel {
+              label {Channel mode}
+              tooltip {Select input channel} xywh {58 84 150 21} box ENGRAVED_BOX down_box BORDER_BOX align 5
+            } {
+              MenuItem {} {
+                label Stereo
+                callback {choice_cfg_channel_stereo_cb();}
+                xywh {60 60 40 25}
+              }
+              MenuItem {} {
+                label Mono
+                callback {choice_cfg_channel_mono_cb();}
+                xywh {50 50 40 25}
+              }
+            }
+            Fl_Choice choice_cfg_samplerate {
+              label Samplerate
+              callback {choice_cfg_samplerate_cb();}
+              tooltip {Select input sample rate} xywh {228 85 135 20} down_box BORDER_BOX align 5
+            } {}
+            Fl_Choice choice_cfg_left_channel {
+              label Left
+              callback {choice_cfg_left_channel_cb();} open
+              tooltip {Select left audio channel} xywh {248 190 50 20} down_box BORDER_BOX align 5
+            } {}
+            Fl_Choice choice_cfg_right_channel {
+              label Right
+              callback {choice_cfg_right_channel_cb();} open
+              tooltip {Select right audio channel} xywh {313 190 50 20} down_box BORDER_BOX align 5
+            } {}
+            Fl_Group {} {
+              label {Remember Device by}
+              xywh {58 133 162 25} box ENGRAVED_FRAME align 5
+            } {
+              Fl_Round_Button radio_cfg_ID {
+                label ID
+                callback {radio_cfg_ID_cb();}
+                xywh {67 138 40 14} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button radio_cfg_name {
+                label Name
+                callback {radio_cfg_name_cb();}
+                xywh {143 138 65 15} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+            Fl_Button button_cfg_rescan_devices {
+              label {Update devices}
+              callback {button_cfg_rescan_devices_cb();}
+              tooltip {Rescan audio devices} xywh {228 133 135 25} box ENGRAVED_BOX
+            }
+            Fl_Choice choice_cfg_dev2 {
+              label {Secondary Audio Device}
+              callback {choice_cfg_dev2_cb();} open
+              tooltip {Select your secondary sound card device} xywh {58 256 170 20} down_box FLAT_BOX align 5
+            } {}
+            Fl_Choice choice_cfg_left_channel2 {
+              label Left
+              callback {choice_cfg_left_channel2_cb();} open
+              tooltip {Select left audio channel} xywh {248 256 50 20} down_box BORDER_BOX align 5
+            } {}
+            Fl_Choice choice_cfg_right_channel2 {
+              label Right
+              callback {choice_cfg_right_channel2_cb();} open
+              tooltip {Select right audio channel} xywh {313 256 50 20} down_box BORDER_BOX align 5
+            } {}
+          }
+          Fl_Group {} {
+            label Streaming
+            xywh {50 330 326 60} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Choice choice_cfg_codec {
+              label Codec open
+              tooltip {Select streaming codec} xywh {58 357 125 20} box ENGRAVED_BOX down_box BORDER_BOX align 5
+            } {
+              MenuItem {} {
+                label MP3
+                callback {choice_cfg_codec_mp3_cb();}
+                xywh {70 70 40 25}
+              }
+              MenuItem {} {
+                label {OGG/VORBIS}
+                callback {choice_cfg_codec_ogg_cb();}
+                xywh {60 60 40 25}
+              }
+              MenuItem {} {
+                label OPUS
+                callback {choice_cfg_codec_opus_cb();}
+                xywh {70 70 40 25}
+              }
+              MenuItem menu_item_cfg_aac {
+                label {AAC+}
+                callback {choice_cfg_codec_aac_cb();}
+                xywh {80 80 40 25}
+              }
+              MenuItem {} {
+                label FLAC
+                callback {choice_cfg_codec_flac_cb();}
+                xywh {80 80 40 25}
+              }
+            }
+            Fl_Choice choice_cfg_bitrate {
+              label Bitrate
+              callback {choice_cfg_bitrate_cb();} open
+              tooltip {Select streaming bitrate} xywh {200 357 115 20} box ENGRAVED_BOX down_box BORDER_BOX align 5
+            } {}
+            Fl_Button {} {
+              callback {button_stream_codec_settings_cb();}
+              image {../xpm/settings.png} xywh {323 355 22 22} box NO_BOX
+            }
+          }
+          Fl_Group {} {
+            label Recording open
+            xywh {50 415 326 60} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Choice choice_rec_codec {
+              label Codec
+              tooltip {Select recording codec} xywh {58 442 125 20} box ENGRAVED_BOX down_box BORDER_BOX align 5
+            } {
+              MenuItem {} {
+                label MP3
+                callback {choice_rec_codec_mp3_cb();}
+                xywh {80 80 40 25}
+              }
+              MenuItem {} {
+                label {OGG/VORBIS}
+                callback {choice_rec_codec_ogg_cb();}
+                xywh {70 70 40 25}
+              }
+              MenuItem {} {
+                label OPUS
+                callback {choice_rec_codec_opus_cb();}
+                xywh {15 15 31 20}
+              }
+              MenuItem menu_item_rec_aac {
+                label {AAC+}
+                callback {choice_rec_codec_aac_cb();}
+                xywh {90 90 40 25}
+              }
+              MenuItem {} {
+                label FLAC
+                callback {choice_rec_codec_flac_cb();}
+                xywh {25 25 31 20}
+              }
+              MenuItem {} {
+                label WAV
+                callback {choice_rec_codec_wav_cb();}
+                xywh {5 5 31 20}
+              }
+            }
+            Fl_Choice choice_rec_bitrate {
+              label Bitrate
+              callback {choice_rec_bitrate_cb();} open
+              tooltip {Select recording bitrate} xywh {200 442 115 20} down_box BORDER_BOX align 5
+            } {}
+            Fl_Button {} {
+              callback {button_rec_codec_settings_cb();}
+              image {../xpm/settings.png} xywh {323 440 22 22} box NO_BOX
+            }
+          }
+          Fl_Button button_advanced {
+            label {Advanced...}
+            callback {static int show_advanced = 0;
+if (!show_advanced)
+{
+	window_cfg->size(window_cfg->w(), 450);
+	show_advanced = 1;
+	fl_g->button_advanced->label("Standard...");
+}
+else
+{
+	window_cfg->size(window_cfg->w(), 380);
+	show_advanced = 0;
+	fl_g->button_advanced->label("Advanced...");
+
+}}
+            xywh {37 345 89 25} box ENGRAVED_BOX hide deactivate
+          }
+          Fl_Value_Input input_cfg_buffer {
+            label {Buffer (ms)}
+            callback {input_cfg_buffer_cb(1);}
+            xywh {37 405 75 20} align 5 when 8 maximum 0 value 50 hide deactivate
+          }
+          Fl_Choice choice_cfg_resample_mode {
+            label {Resample Quality}
+            callback {choice_cfg_resample_mode_cb();}
+            xywh {177 405 125 20} down_box BORDER_BOX align 5 hide deactivate
+          } {
+            MenuItem {} {
+              label SINC_BEST
+              xywh {0 0 31 20}
+            }
+            MenuItem {} {
+              label SINC_MEDIUM
+              xywh {10 10 31 20}
+            }
+            MenuItem {} {
+              label SINC_FASTEST
+              xywh {20 20 31 20}
+            }
+            MenuItem {} {
+              label ZERO_ORDER_HOLD
+              xywh {30 30 31 20}
+            }
+            MenuItem {} {
+              label LINEAR
+              xywh {40 40 31 20}
+            }
+          }
+          Fl_Group {} {
+            label {Signal detection levels} open
+            xywh {50 500 326 50} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Value_Input input_cfg_present_level {
+              label {Signal present}
+              callback {input_cfg_present_level_cb();}
+              xywh {58 524 70 19} align 5 minimum -90 maximum 0 value -50
+            }
+            Fl_Value_Input input_cfg_absent_level {
+              label {Signal absent}
+              callback {input_cfg_absent_level_cb();}
+              xywh {253 524 65 19} align 5 minimum -90 maximum 0 value -50
+            }
+            Fl_Box {} {
+              label dB
+              xywh {128 526 25 17} align 20
+            }
+            Fl_Box {} {
+              label dB
+              xywh {318 525 25 17} align 20
+            }
+          }
+        }
+        Fl_Group {} {
+          label Stream open
+          xywh {0 20 434 620} hide
+        } {
+          Fl_Group {} {
+            label {Update song name from file}
+            xywh {50 55 329 65} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Input input_cfg_song_file {
+              callback {input_cfg_song_file_cb();}
+              tooltip {Filename that holds the current song name} xywh {55 64 283 26} align 9
+              code0 {this->input_cfg_song_file->maximum_size(500);}
+            }
+            Fl_Button button_songfile_browse {
+              callback {button_cfg_browse_songfile_cb();}
+              tooltip {Select file that holds the current song name} image {../xpm/folder.png} xywh {343 65 25 25} box ENGRAVED_FRAME
+            }
+            Fl_Check_Button check_song_update_active {
+              label Activate
+              callback {check_song_update_active_cb();}
+              tooltip {Activate auto update song name from file} xywh {53 91 77 25} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_read_last_line {
+              label {Read last line instead of first}
+              callback {check_read_last_line_cb();}
+              tooltip {Activate auto update song name from file} xywh {133 91 215 25} down_box DOWN_BOX
+            }
+          }
+          Fl_Group {} {
+            label {Update song name manually} open
+            xywh {50 232 329 40} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Input input_cfg_song {
+              callback {input_cfg_song_cb();}
+              tooltip {Current song name} xywh {55 240 283 25} align 5 when 1
+              code0 {this->input_cfg_song->maximum_size(500);}
+            }
+            Fl_Button button_cfg_song_go {
+              label OK
+              callback {button_cfg_song_go_cb();}
+              tooltip {Send current song name to the server} xywh {343 240 25 25} box ENGRAVED_BOX shortcut 0xff0d labelsize 12
+            }
+          }
+          Fl_Group {} {
+            label {Update song name from application} open
+            xywh {50 145 329 65} box ENGRAVED_BOX align 5
+          } {
+            Fl_Check_Button check_cfg_use_app {
+              label Activate
+              callback {check_cfg_use_app_cb();}
+              xywh {53 175 85 33} down_box DOWN_BOX
+            }
+            Fl_Choice choice_cfg_app {
+              callback {choice_cfg_app_cb();} open
+              tooltip {Changes the song through an running application} xywh {55 156 203 20} down_box BORDER_BOX
+            } {}
+            Fl_Group {} {open
+              xywh {268 153 105 40}
+            } {
+              Fl_Round_Button radio_cfg_title_artist {
+                label {Title - Artist}
+                callback {radio_cfg_title_artist_cb();}
+                xywh {268 153 105 20} type Radio down_box ROUND_DOWN_BOX
+              }
+              Fl_Round_Button radio_cfg_artist_title {
+                label {Artist - Title}
+                callback {radio_cfg_artist_title_cb();}
+                xywh {268 178 105 15} type Radio down_box ROUND_DOWN_BOX
+              }
+            }
+          }
+          Fl_Group {} {
+            label Streaming open
+            xywh {50 472 329 155} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Check_Button check_cfg_connect {
+              label {Start streaming after launch}
+              callback {check_cfg_connect_cb();}
+              tooltip {Connect automatically to a server after launch} xywh {55 533 205 18} down_box DOWN_BOX
+            }
+            Fl_Value_Input input_cfg_silence {
+              callback {input_cfg_silence_cb();}
+              xywh {273 507 42 19}
+            }
+            Fl_Value_Input input_cfg_signal {
+              callback {input_cfg_signal_cb();}
+              xywh {272 483 42 19}
+            }
+            Fl_Box {} {
+              label seconds
+              xywh {313 483 62 16} align 20
+            }
+            Fl_Box {} {
+              label seconds
+              xywh {313 507 62 16} align 20
+            }
+            Fl_Check_Button check_cfg_force_reconnecting {
+              label {Force reconnecting}
+              callback {check_cfg_force_reconnecting_cb();}
+              tooltip {If enabled butt keeps reconnecting regardless of the error message} xywh {55 556 205 18} down_box DOWN_BOX
+            }
+            Fl_Value_Input input_cfg_reconnect_delay {
+              callback {input_cfg_reconnect_delay_cb();}
+              xywh {58 601 42 19}
+            }
+            Fl_Box {} {
+              label {Reconnect delay:}
+              xywh {55 581 190 17} align 20
+            }
+            Fl_Box {} {
+              label seconds
+              xywh {104 602 62 16} align 20
+            }
+            Fl_Check_Button check_stream_signal {
+              label {Start if signal is present for}
+              callback {check_stream_signal_cb();}
+              tooltip {Connect automatically to a server after launch} xywh {55 485 205 18} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_stream_silence {
+              label {Stop if signal is absent for}
+              callback {check_stream_silence_cb();}
+              tooltip {Connect automatically to a server after launch} xywh {55 507 205 18} down_box DOWN_BOX
+            }
+          }
+          Fl_Group {} {
+            label {Extend song name} open
+            xywh {50 356 329 90} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Input input_cfg_song_prefix {
+              label {Prefix:}
+              callback {input_cfg_song_prefix_cb();}
+              xywh {103 372 255 24} when 1
+              code0 {this->input_cfg_song_prefix->maximum_size(500);}
+            }
+            Fl_Input input_cfg_song_suffix {
+              label {Suffix:}
+              callback {input_cfg_song_suffix_cb();}
+              xywh {103 407 255 24} when 1
+              code0 {this->input_cfg_song_suffix->maximum_size(500);}
+            }
+          }
+          Fl_Group {} {
+            label {Update song name delay} open
+            xywh {50 293 329 32} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Choice choice_cfg_song_delay {
+              callback {choice_cfg_song_delay_cb();} open
+              tooltip {Introduces a delay until the song name is actually updated} xywh {55 299 153 20} down_box BORDER_BOX align 8
+            } {}
+          }
+        }
+        Fl_Group {} {
+          label Record
+          xywh {0 20 434 620} hide
+        } {
+          Fl_Input input_rec_filename {
+            label {Record File Name:}
+            callback {input_rec_filename_cb();}
+            tooltip {Record file name} xywh {50 55 326 25} align 5
+            code0 {this->input_rec_filename->maximum_size(500);}
+          }
+          Fl_Input input_rec_folder {
+            label {Record Directory:}
+            callback {input_rec_folder_cb();}
+            tooltip {Directory of recordings} xywh {50 106 298 25} align 5
+            code0 {this->input_rec_folder->maximum_size(500);}
+          }
+          Fl_Button button_rec_browse {
+            callback {button_rec_browse_cb();}
+            tooltip {Select recording directory} image {../xpm/folder.png} xywh {350 106 25 25} box ENGRAVED_BOX
+          }
+          Fl_Group {} {
+            label {Split file} open
+            xywh {50 164 326 57} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Value_Input input_rec_split_time {
+              label every
+              callback {input_rec_split_time_cb();}
+              xywh {97 171 40 19}
+            }
+            Fl_Box text_rec_split_time {
+              label minutes
+              xywh {143 171 50 16}
+            }
+            Fl_Check_Button check_sync_to_full_hour {
+              label {Sync to full hour}
+              callback {check_sync_to_full_hour_cb();}
+              tooltip {Sync to full hour} xywh {55 196 124 15} down_box DOWN_BOX
+            }
+            Fl_Button {} {
+              label {Split now}
+              callback {button_rec_split_now_cb();}
+              xywh {288 179 80 28} box ENGRAVED_BOX
+            }
+          }
+          Fl_Group {} {
+            label Recording open
+            xywh {50 250 326 138} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Check_Button check_cfg_auto_start_rec {
+              label {Start recording when connected}
+              callback {check_cfg_auto_start_rec_cb();}
+              tooltip {Start recording when connected} xywh {55 260 265 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_cfg_rec_after_launch {
+              label {Start recording after launch}
+              callback {check_cfg_rec_after_launch_cb();}
+              tooltip {Start recording after launch} xywh {55 309 265 20} down_box DOWN_BOX
+            }
+            Fl_Value_Input input_rec_signal {
+              callback {input_rec_signal_cb();}
+              xywh {266 332 42 19}
+            }
+            Fl_Box {} {
+              label seconds
+              xywh {308 333 64 16} align 20
+            }
+            Fl_Check_Button check_cfg_auto_stop_rec {
+              label {Stop recording when disconnected}
+              callback {check_cfg_auto_stop_rec_cb();}
+              tooltip {Start recording when disconnected} xywh {55 284 265 20} down_box DOWN_BOX
+            }
+            Fl_Value_Input input_rec_silence {
+              callback {input_rec_silence_cb();}
+              xywh {266 356 42 19}
+            }
+            Fl_Box {} {
+              label seconds
+              xywh {308 356 62 16} align 20
+            }
+            Fl_Check_Button check_rec_signal {
+              label {Start if signal is present for}
+              callback {check_rec_signal_cb();}
+              tooltip {Connect automatically to a server after launch} xywh {55 332 205 18} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_rec_silence {
+              label {Stop if signal is absent for}
+              callback {check_rec_silence_cb();}
+              tooltip {Connect automatically to a server after launch} xywh {55 355 205 18} down_box DOWN_BOX
+            }
+          }
+        }
+        Fl_Group {} {
+          label DSP open
+          xywh {0 20 434 620} hide
+        } {
+          Fl_Group {} {
+            label Equalizer open
+            xywh {30 55 371 225} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Check_Button check_stream_eq {
+              label Stream
+              callback {check_stream_eq_cb();}
+              xywh {35 57 79 25} down_box DOWN_BOX
+            }
+            Fl_Slider equalizerSlider1 {
+              label 32Hz
+              callback {slider_equalizer1_cb(o->value());}
+              xywh {53 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider1->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider2 {
+              label 64Hz
+              callback {slider_equalizer2_cb(o->value());}
+              xywh {88 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider2->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider3 {
+              label 125Hz
+              callback {slider_equalizer3_cb(o->value());}
+              xywh {123 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider3->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider4 {
+              label 250Hz
+              callback {slider_equalizer4_cb(o->value());}
+              xywh {158 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider4->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider5 {
+              label 500Hz
+              callback {slider_equalizer5_cb(o->value());}
+              xywh {193 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider5->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Text_Display equalizerGain1 {
+              label {+0.0}
+              xywh {31 105 51 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain2 {
+              label {+0.0}
+              xywh {74 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain3 {
+              label {+0.0}
+              xywh {109 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain4 {
+              label {+0.0}
+              xywh {144 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain5 {
+              label {+0.0}
+              xywh {179 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Slider equalizerSlider6 {
+              label 1kHz
+              callback {slider_equalizer6_cb(o->value());}
+              xywh {228 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider6->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider7 {
+              label 2kHz
+              callback {slider_equalizer7_cb(o->value());}
+              xywh {263 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider7->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider8 {
+              label 4kHz
+              callback {slider_equalizer8_cb(o->value());}
+              xywh {298 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider8->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider9 {
+              label 8kHz
+              callback {slider_equalizer9_cb(o->value());}
+              xywh {333 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider9->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider equalizerSlider10 {
+              label 16kHz
+              callback {slider_equalizer10_cb(o->value());}
+              xywh {368 105 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 15 maximum -15 step 0.1 slider_size 0.151515
+              code0 {equalizerSlider10->default_value = 0.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Text_Display equalizerGain6 {
+              label {+0.0}
+              xywh {214 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain7 {
+              label {+0.0}
+              xywh {249 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain8 {
+              label {+0.0}
+              xywh {284 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain9 {
+              label {+0.0}
+              xywh {319 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display equalizerGain10 {
+              label {+0.0}
+              xywh {354 105 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Choice choice_eq_preset {
+              callback {choice_eq_preset_cb();}
+              tooltip {Equalizer Preset} xywh {250 62 140 18} down_box BORDER_BOX
+            } {
+              MenuItem {} {
+                label Manual
+                xywh {0 0 31 20}
+              }
+              MenuItem {} {
+                label Acoustic
+                xywh {10 10 31 20}
+              }
+              MenuItem {} {
+                label {Bass Booster}
+                xywh {20 20 31 20}
+              }
+              MenuItem {} {
+                label {Bass Reducer}
+                xywh {30 30 31 20}
+              }
+              MenuItem {} {
+                label Classical
+                xywh {40 40 31 20}
+              }
+              MenuItem {} {
+                label Dance
+                xywh {50 50 31 20}
+              }
+              MenuItem {} {
+                label Deep
+                xywh {60 60 31 20}
+              }
+              MenuItem {} {
+                label Electronic
+                xywh {70 70 31 20}
+              }
+              MenuItem {} {
+                label {Hip-Hop}
+                xywh {80 80 31 20}
+              }
+              MenuItem {} {
+                label Jazz
+                xywh {90 90 31 20}
+              }
+              MenuItem {} {
+                label Latin
+                xywh {100 100 31 20}
+              }
+              MenuItem {} {
+                label Loudness
+                xywh {110 110 31 20}
+              }
+              MenuItem {} {
+                label Lounge
+                xywh {120 120 31 20}
+              }
+              MenuItem {} {
+                label Piano
+                xywh {130 130 31 20}
+              }
+              MenuItem {} {
+                label RnB
+                xywh {140 140 31 20}
+              }
+              MenuItem {} {
+                label Rock
+                xywh {150 150 31 20}
+              }
+              MenuItem {} {
+                label Speech
+                xywh {160 160 31 20}
+              }
+              MenuItem {} {
+                label {Treble Booster}
+                xywh {170 170 31 20}
+              }
+              MenuItem {} {
+                label {Treble Reducer}
+                xywh {180 180 31 20}
+              }
+              MenuItem {} {
+                label {Vocal Booster}
+                xywh {190 190 31 20}
+              }
+            }
+            Fl_Check_Button check_rec_eq {
+              label Rec
+              callback {check_rec_eq_cb();}
+              xywh {115 57 60 25} down_box DOWN_BOX
+            }
+          }
+          Fl_Group {} {
+            label {Dynamic Range Compressor} open
+            xywh {30 323 371 225} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Check_Button check_stream_drc {
+              label Stream
+              callback {check_stream_drc_cb();}
+              xywh {35 326 79 25} down_box DOWN_BOX
+            }
+            Fl_Slider thresholdSlider {
+              label Threshold
+              callback {slider_threshold_cb(o->value());}
+              xywh {68 378 15 150} type {Vert Knob} box NO_BOX labelsize 11 maximum -60 step 0.1 value -20 slider_size 0.151515
+              code0 {thresholdSlider->default_value = -20.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider ratioSlider {
+              label Ratio
+              callback {slider_ratio_cb(o->value());}
+              xywh {138 378 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 10 step 0.1 value 5 slider_size 0.151515
+              code0 {ratioSlider->default_value = 5.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider attackSlider {
+              label Attack
+              callback {slider_attack_cb(o->value());}
+              xywh {208 378 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 1 maximum 0 step 0.001 value 0.01 slider_size 0.151515
+              code0 {attackSlider->default_value = 0.01;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Slider releaseSlider {
+              label Release
+              callback {slider_release_cb(o->value());}
+              xywh {278 378 14 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 10 maximum 0 step 0.01 value 1 slider_size 0.151515
+              code0 {releaseSlider->default_value = 1.0;}
+              class Fl_My_Value_Slider
+            }
+            Fl_Text_Display threshold {
+              label {+0.0}
+              xywh {54 378 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display ratio {
+              label {+0.0}
+              xywh {124 378 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display attack {
+              label {+0.00}
+              xywh {197 378 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Text_Display release {
+              label {+0.00}
+              xywh {267 378 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Slider makeupSlider {
+              label MakeupGain
+              callback {slider_makeup_cb(o->value());}
+              xywh {348 378 15 150} type {Vert Knob} box NO_BOX labelsize 11 minimum 30 maximum 0 step 0.01 value 1 slider_size 0.151515
+              class Fl_My_Value_Slider
+            }
+            Fl_Text_Display makeup {
+              label {+0.0}
+              xywh {334 378 35 10} box NO_BOX labelsize 11
+            }
+            Fl_Check_Button check_aggressive_mode {
+              label {Aggressive Mode}
+              callback {check_aggressive_mode_cb();}
+              xywh {259 328 130 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_rec_drc {
+              label Rec
+              callback {check_rec_drc_cb();}
+              xywh {110 325 60 25} down_box DOWN_BOX
+            }
+            Fl_Group LED_comp_threshold {
+              xywh {36 529 10 10} box BORDER_BOX
+              code0 {\#include "Fl_LED.h"}
+              class LED
+            } {}
+          }
+          Fl_Button {} {
+            label Reset
+            callback {button_eq_reset_cb();}
+            xywh {320 33 80 19} box ENGRAVED_BOX labelsize 12
+          }
+          Fl_Button {} {
+            label Reset
+            callback {button_drc_reset_cb();}
+            xywh {320 301 80 19} box ENGRAVED_BOX labelsize 12
+          }
+        }
+        Fl_Group {} {
+          label MIDI open
+          xywh {1 20 434 620} hide
+        } {
+          Fl_Choice choice_midi_dev {
+            label {MIDI Device}
+            callback {choice_midi_dev_cb();} open
+            tooltip {Select your MIDI device} xywh {51 65 330 20} down_box FLAT_BOX align 5
+          } {}
+          Fl_Button button_midi_rescan_devices {
+            label Rescan
+            callback {button_midi_rescan_devices_cb();}
+            tooltip {Rescan MIDI devices} xywh {51 90 120 25} box ENGRAVED_BOX
+          }
+          Fl_Group LED_midi_command {
+            label MIDI
+            tooltip {MIDI signal indicator} xywh {336 95 10 10} box BORDER_BOX align 8
+            code0 {\#include "Fl_LED.h"}
+            class LED
+          } {}
+          Fl_Browser browser_midi_command {
+            label {MIDI Commands}
+            callback {browser_midi_command_cb();}
+            xywh {51 165 330 190} type Hold align 5
+          }
+          Fl_Check_Button check_midi_command_enable {
+            label Enable
+            callback {check_midi_command_enable_cb();}
+            tooltip {Enable/Disable the selected MIDI command} xywh {51 364 145 33} down_box DOWN_BOX
+          }
+          Fl_Group group_midi_command_settings {
+            xywh {51 392 330 141} box ENGRAVED_FRAME
+          } {
+            Fl_Choice choice_midi_channel {
+              label Channel
+              callback {choice_midi_channel_cb();}
+              tooltip {Select MIDI channel} xywh {61 419 80 25} box ENGRAVED_BOX down_box BORDER_BOX align 5
+            } {
+              MenuItem {} {
+                label Any
+                xywh {65 65 40 25}
+              }
+              MenuItem {} {
+                label 1
+                xywh {55 55 40 25}
+              }
+              MenuItem {} {
+                label 2
+                xywh {65 65 40 25}
+              }
+              MenuItem {} {
+                label 3
+                xywh {75 75 40 25}
+              }
+              MenuItem {} {
+                label 4
+                xywh {85 85 40 25}
+              }
+              MenuItem {} {
+                label 5
+                xywh {95 95 40 25}
+              }
+              MenuItem {} {
+                label 6
+                xywh {105 105 40 25}
+              }
+              MenuItem {} {
+                label 7
+                xywh {115 115 40 25}
+              }
+              MenuItem {} {
+                label 8
+                xywh {125 125 40 25}
+              }
+              MenuItem {} {
+                label 9
+                xywh {135 135 40 25}
+              }
+              MenuItem {} {
+                label 10
+                xywh {145 145 40 25}
+              }
+              MenuItem {} {
+                label 11
+                xywh {155 155 40 25}
+              }
+              MenuItem {} {
+                label 12
+                xywh {165 165 40 25}
+              }
+              MenuItem {} {
+                label 13
+                xywh {175 175 40 25}
+              }
+              MenuItem {} {
+                label 14
+                xywh {185 185 40 25}
+              }
+              MenuItem {} {
+                label 15
+                xywh {195 195 40 25}
+              }
+              MenuItem {} {
+                label 16
+                xywh {205 205 40 25}
+              }
+            }
+            Fl_Value_Input input_midi_msg_num {
+              label CC
+              callback {input_midi_msg_num_cb();}
+              tooltip {Select CC number} xywh {156 418 45 25} align 5 maximum 127
+            }
+            Fl_Button button_midi_learn {
+              label Learn
+              callback {button_midi_learn_cb();}
+              tooltip {Activate to auto detect the channel and CC number} xywh {215 417 151 25} type Toggle box ENGRAVED_BOX
+            }
+            Fl_Choice choice_midi_cc_mode {
+              label {CC Mode}
+              callback {choice_midi_cc_mode_cb();} open
+              tooltip {Select CC mode} xywh {61 470 143 25} box ENGRAVED_BOX down_box BORDER_BOX align 5
+            } {
+              MenuItem {} {
+                label Absolute
+                xywh {75 75 40 25}
+              }
+              MenuItem {} {
+                label {Relative (Twos Complement)}
+                xywh {65 65 40 25}
+              }
+              MenuItem {} {
+                label {Relative (Binary Offset)}
+                xywh {75 75 40 25}
+              }
+              MenuItem {} {
+                label {Relative (Sign Magnitude)}
+                xywh {85 85 40 25}
+              }
+            }
+            Fl_Check_Button check_midi_soft_takeover {
+              label {Soft takeover}
+              callback {check_midi_soft_takeover_cb();}
+              tooltip {Prevents jumps when controlling a slider in absolute mode} xywh {60 494 145 33} down_box DOWN_BOX
+            }
+          }
+        }
+        Fl_Group {} {
+          label TLS
+          xywh {0 20 434 620} hide
+        } {
+          Fl_Group {} {
+            label {SSL/TLS} open
+            xywh {50 55 326 184} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Input input_tls_cert_file {
+              label {CA Certificate File:}
+              callback {input_tls_cert_file_cb();}
+              tooltip {Certificate file} xywh {58 149 275 25} align 5
+              code0 {this->input_tls_cert_file->maximum_size(500);}
+            }
+            Fl_Input input_tls_cert_dir {
+              label {CA Certificate Directory:}
+              callback {input_tls_cert_dir_cb();}
+              tooltip {Certificate directory} xywh {58 200 275 25} align 5
+              code0 {this->input_tls_cert_dir->maximum_size(500);}
+            }
+            Fl_Button button_tls_browse_dir {
+              callback {button_tls_browse_dir_cb();}
+              tooltip {Select certificate directory} image {../xpm/folder.png} xywh {338 200 25 25} box ENGRAVED_BOX
+            }
+            Fl_Button button_tls_browse_file {
+              callback {button_tls_browse_file_cb();}
+              tooltip {Select certificate file} image {../xpm/folder.png} xywh {338 149 25 25} box ENGRAVED_BOX
+            }
+            Fl_Box {} {
+              label {If your server uses a certificate from
+Let's Encrypt or another well known
+CA, you can leave these fields blank.}
+              xywh {56 67 272 60} align 20
+            }
+          }
+        }
+        Fl_Group {} {
+          label GUI open
+          xywh {0 20 434 620} hide
+        } {
+          Fl_Group {} {
+            label {Display Color} open
+            xywh {45 138 343 42} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Button button_gui_text_color {
+              label {Text color}
+              callback {button_gui_text_color_cb();}
+              tooltip {Select text color} xywh {58 148 25 25} box SHADOW_BOX color 7 align 8
+            }
+            Fl_Button button_gui_bg_color {
+              label {Background color}
+              callback {button_gui_bg_color_cb();}
+              tooltip {Select background color} xywh {185 145 25 25} box SHADOW_BOX color 15 align 8
+            }
+          }
+          Fl_Group {} {
+            label Misc open
+            xywh {45 300 345 275} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Check_Button check_gui_attach {
+              label {Attach settings window to main window}
+              callback {check_gui_attach_cb();}
+              tooltip {Attach this window to the butt window} xywh {56 310 300 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_gui_ontop {
+              label {Stay always on top}
+              callback {check_gui_ontop_cb();}
+              tooltip {Stay always on top} xywh {56 335 175 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_gui_lcd_auto {
+              label {Change display mode every 5 seconds}
+              callback {check_gui_lcd_auto_cb()}
+              tooltip {Change display mode every 5 seconds} xywh {56 410 295 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_gui_hide_log_window {
+              label {Hide log window after start up}
+              callback {check_gui_hide_log_window_cb();}
+              tooltip {Hide log window after start up} xywh {56 385 220 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_gui_remember_pos {
+              label {Remember main window position}
+              callback {check_gui_remember_pos_cb();}
+              tooltip {Remember main window position} xywh {56 360 260 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_gui_start_minimized {
+              label {Start minimized}
+              callback {check_gui_start_minimized_cb();}
+              tooltip {Minimize butt at startup} xywh {56 435 149 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_gui_disable_gain_slider {
+              label {Disable gain control}
+              callback {check_gui_disable_gain_slider_cb();}
+              xywh {56 460 194 20} down_box DOWN_BOX
+            }
+            Fl_Check_Button check_gui_show_listeners {
+              label {Show listeners}
+              callback {check_gui_show_listeners_cb();}
+              tooltip {Show current listeners in the display (not always available)} xywh {56 485 194 20} down_box DOWN_BOX
+            }
+            Fl_Input input_gui_window_title {
+              label {Custom window title:}
+              callback {input_gui_window_title_cb();}
+              tooltip {Define a custom window title} xywh {55 530 325 25} align 5 when 1
+              code0 {this->input_gui_window_title->maximum_size(500);}
+            }
+          }
+          Fl_Group {} {
+            label Language open
+            xywh {45 50 343 60} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Choice choice_gui_language {
+              callback {choice_gui_language_cb();} open
+              xywh {58 70 315 20} down_box BORDER_BOX
+            } {
+              MenuItem {} {
+                label System
+                xywh {0 0 31 20}
+              }
+              MenuItem {} {
+                label {العرب}
+                xywh {10 10 31 20}
+              }
+              MenuItem {} {
+                label Deutsch
+                xywh {0 0 31 20}
+              }
+              MenuItem {} {
+                label English
+                xywh {0 0 31 20}
+              }
+              MenuItem {} {
+                label {Español}
+                xywh {20 20 31 20}
+              }
+              MenuItem {} {
+                label {Français}
+                xywh {10 10 31 20}
+              }
+              MenuItem {} {
+                label Nederlands
+                xywh {0 0 31 20}
+              }
+              MenuItem {} {
+                label {Português Brasileiro}
+                xywh {10 10 31 20}
+              }
+            }
+          }
+          Fl_Group {} {
+            label {VU meter} open
+            xywh {45 205 345 70} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Round_Button radio_gui_vu_gradient {
+              label {Gradient colors}
+              callback {radio_gui_vu_gradient_cb();}
+              xywh {56 220 144 15} type Radio down_box ROUND_DOWN_BOX
+            }
+            Fl_Round_Button radio_gui_vu_solid {
+              label {Solid colors}
+              callback {radio_gui_vu_solid_cb();}
+              xywh {56 245 139 15} type Radio down_box ROUND_DOWN_BOX
+            }
+            Fl_Check_Button check_gui_always_show_vu_tabs {
+              label {Always show tabs}
+              callback {check_gui_always_show_vu_tabs_cb();}
+              xywh {200 220 165 15} down_box DOWN_BOX
+            }
+          }
+        }
+        Fl_Group {} {
+          label Donate
+          xywh {0 20 434 620} hide
+        } {
+          Fl_Group {} {
+            label Donation open
+            xywh {55 70 326 360} box ENGRAVED_FRAME align 5
+          } {
+            Fl_Box {} {
+              label {Keeping this software up to date, adding
+new features and answering support mails
+takes a lot of time and effort. If you can
+afford it, please consider supporting this
+project.
+
+Thank you!}
+              xywh {67 75 308 150} align 20
+            }
+            Fl_Button {} {
+              label {&Donate via PayPal}
+              callback {fl_open_uri("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LTRSQNTWN4L6L&source=url");}
+              xywh {67 225 300 28} box ENGRAVED_BOX
+              code0 {\#include <FL/filename.H>}
+            }
+            Fl_Button {} {
+              label {Become a &patron}
+              callback {fl_open_uri("https://www.patreon.com/butt_broadcast");}
+              xywh {67 272 300 27} box ENGRAVED_BOX
+              code0 {\#include <FL/filename.H>}
+            }
+            Fl_Button {} {
+              label {&Bitcoin && Co}
+              callback {this->window_donate_crypto->position(this->window_cfg->x(), this->window_cfg->y());
+this->window_donate_crypto->show();}
+              xywh {67 361 300 28} box ENGRAVED_BOX
+            }
+            Fl_Button {} {
+              label {&Apple Pay, Google Pay, SEPA and more}
+              callback {fl_open_uri("https://donorbox.org/butt");}
+              xywh {67 317 300 28} box ENGRAVED_BOX
+              code0 {\#include <FL/filename.H>}
+            }
+          }
+        }
+      }
+    }
+    Fl_Window window_add_srv {
+      label {Add server}
+      xywh {815 551 400 415} type Double hide modal
+    } {
+      Fl_Input input_add_srv_name {
+        label {Name:}
+        xywh {70 27 245 23} align 5
+        code0 {this->input_add_srv_name->maximum_size(100);}
+      }
+      Fl_Input input_add_srv_addr {
+        label {Address:}
+        xywh {10 206 295 25} align 5
+        code0 {this->input_add_srv_addr->maximum_size(100);}
+      }
+      Fl_Input input_add_srv_port {
+        label {Port:}
+        xywh {315 206 75 25} type Int align 5
+      }
+      Fl_Input input_add_srv_pwd {
+        label {Password:}
+        xywh {10 251 295 25} type Secret align 5
+        code0 {this->input_add_srv_pwd->maximum_size(100);}
+      }
+      Fl_Input input_add_srv_mount {
+        label {Icecast mountpoint:}
+        xywh {10 301 215 25} align 5
+        code0 {this->input_add_srv_mount->maximum_size(100);}
+      }
+      Fl_Input input_add_srv_usr {
+        label {Icecast user:}
+        xywh {235 301 155 25} align 5
+        code0 {this->input_add_srv_usr->maximum_size(100);}
+      }
+      Fl_Button button_cfg_show_pw {
+        label Show
+        callback {button_add_srv_show_pwd_cb();}
+        tooltip {show/hide password} xywh {315 251 75 25} box ENGRAVED_BOX
+      }
+      Fl_Group {} {
+        label Type
+        xywh {10 96 125 86} box ENGRAVED_BOX align 5
+      } {
+        Fl_Round_Button radio_add_srv_shoutcast {
+          label Shoutcast
+          callback {radio_add_srv_shoutcast_cb();}
+          xywh {15 105 88 15} type Radio down_box ROUND_DOWN_BOX
+        }
+        Fl_Round_Button radio_add_srv_icecast {
+          label Icecast
+          callback {radio_add_srv_icecast_cb();}
+          xywh {15 132 80 12} type Radio down_box ROUND_DOWN_BOX
+        }
+        Fl_Round_Button radio_add_srv_radioco {
+          label {Radio.co}
+          callback {radio_add_srv_radioco_cb();}
+          xywh {15 157 80 12} type Radio down_box ROUND_DOWN_BOX
+        }
+      }
+      Fl_Button {} {
+        label {&Cancel}
+        callback {button_add_srv_cancel_cb();}
+        xywh {10 366 85 25} box ENGRAVED_BOX
+      }
+      Fl_Button button_add_srv_add {
+        label {&ADD}
+        callback {button_add_srv_add_cb();}
+        xywh {305 366 85 25} box ENGRAVED_BOX
+      }
+      Fl_Button button_add_srv_save {
+        label {&Save}
+        callback {button_add_srv_save_cb();}
+        xywh {305 366 85 25} box ENGRAVED_BOX
+      }
+      Fl_Group frame_add_srv_tls {
+        label {SSL/TLS}
+        xywh {140 96 250 86} box ENGRAVED_BOX align 5
+      } {
+        Fl_Check_Button check_add_srv_tls {
+          label {Use SSL/TLS}
+          xywh {148 102 190 20} down_box DOWN_BOX
+        }
+        Fl_Button button_add_srv_revoke_cert {
+          label {Revoke certificate trust}
+          callback {button_add_srv_revoke_cert_cb();}
+          xywh {150 148 225 25} box ENGRAVED_BOX
+        }
+      }
+      Fl_Check_Browser browser_add_srv_station_list {
+        label {Radio.co Stations}
+        xywh {140 206 250 83} align 5
+      }
+      Fl_Button button_add_srv_get_stations {
+        label {Get Stations}
+        callback {button_add_srv_get_stations_cb();}
+        xywh {10 205 120 25} box ENGRAVED_BOX hide
+      }
+      Fl_Button button_add_srv_select_all {
+        label {Select all}
+        callback {button_add_srv_select_all_cb();}
+        xywh {140 295 120 20} box ENGRAVED_BOX hide
+      }
+      Fl_Button button_add_srv_deselect_all {
+        label {Deselect all}
+        callback {button_add_srv_deselect_all_cb();}
+        xywh {265 295 125 20} box ENGRAVED_BOX hide
+      }
+      Fl_Check_Button check_add_srv_protocol {
+        label {Use legacy Icecast protocol}
+        tooltip {Activate this if you want to use the older SOURCE protocol instead of the newer PUT protocol} xywh {8 336 297 15} down_box DOWN_BOX
+      }
+    }
+    Fl_Window window_add_icy {
+      label {Add stream info}
+      xywh {1158 448 305 380} type Double hide modal
+    } {
+      Fl_Input input_add_icy_name {
+        label {Name:}
+        tooltip {The name of your new ICY-entrie} xywh {10 35 285 25} align 5
+        code0 {this->input_add_icy_name->maximum_size(100);}
+      }
+      Fl_Input input_add_icy_desc {
+        label {Description:}
+        xywh {10 145 170 25} align 5
+        code0 {this->input_add_icy_desc->maximum_size(100);}
+      }
+      Fl_Input input_add_icy_genre {
+        label {Genre:}
+        xywh {185 145 110 25} align 5
+        code0 {this->input_add_icy_genre->maximum_size(100);}
+      }
+      Fl_Input input_add_icy_url {
+        label {URL:}
+        xywh {10 190 170 25} align 5
+        code0 {this->input_add_icy_url->maximum_size(100);}
+      }
+      Fl_Input input_add_icy_icq {
+        label {ICQ:}
+        xywh {185 190 110 25} align 5
+        code0 {this->input_add_icy_icq->maximum_size(100);}
+      }
+      Fl_Input input_add_icy_irc {
+        label {IRC:}
+        xywh {10 235 170 25} align 5
+        code0 {this->input_add_icy_irc->maximum_size(100);}
+      }
+      Fl_Input input_add_icy_aim {
+        label {AIM:}
+        xywh {185 235 110 25} align 5
+        code0 {this->input_add_icy_aim->maximum_size(100);}
+      }
+      Fl_Check_Button check_add_icy_pub {
+        label {Make server public}
+        xywh {10 270 235 20} down_box DOWN_BOX
+      }
+      Fl_Button {} {
+        label {&Cancel}
+        callback {button_add_icy_cancel_cb();}
+        xywh {10 340 74 25} box ENGRAVED_BOX
+      }
+      Fl_Button button_add_icy_add {
+        label {&ADD}
+        callback {button_add_icy_add_cb();}
+        xywh {224 340 74 25} box ENGRAVED_BOX
+      }
+      Fl_Button button_add_icy_save {
+        label {&Save}
+        callback {button_add_icy_save_cb();}
+        xywh {224 340 74 25} box ENGRAVED_BOX
+      }
+      Fl_Check_Button check_expand_variables {
+        label {Expand variables}
+        tooltip {Activate to expand date variables in name and description} xywh {10 295 235 20} down_box DOWN_BOX
+      }
+    }
+    code {Fl::scheme("standard");
+window_main->label(PACKAGE_STRING);
+
+info_buffer = new Fl_Text_Buffer();
+info_output->buffer(info_buffer);
+
+//window_cfg->size(window_cfg->w(), 380);
+
+// show info output...
+info_visible = 1;
+                
+info_output->show();} {}
+    Fl_Window window_donate_crypto {
+      label {Donate Cryptocurrency}
+      xywh {825 723 460 255} type Double hide
+      class Fl_My_Double_Window
+    } {
+      Fl_Output output_bitcoin_addr {
+        label Bitcoin
+        xywh {20 40 320 22} box FLAT_BOX align 5
+        code0 {output_bitcoin_addr->value("bc1q4uq7h464rsu2cudrmuuqmc4tcr98d0edrhe5au");}
+      }
+      Fl_Button {} {
+        label Copy
+        callback {int len = this->output_bitcoin_addr->size();
+this->output_bitcoin_addr->position(0, len);
+this->output_bitcoin_addr->copy(1);
+
+fl_message(_("Bitcoin address has been copied to clipboard."));}
+        xywh {350 40 88 22} box ENGRAVED_BOX
+        code0 {\#include <FL/fl_ask.H>}
+      }
+      Fl_Output output_litecoin_addr {
+        label Litecoin
+        xywh {20 100 320 22} box FLAT_BOX align 5
+        code0 {output_litecoin_addr->value("Ld9gntf8fsYpmVcbstFkzz5R3sNPC3AhTx");}
+      }
+      Fl_Button {} {
+        label Copy
+        callback {int len = this->output_litecoin_addr->size();
+this->output_litecoin_addr->position(0, len);
+this->output_litecoin_addr->copy(1);
+
+fl_message(_("Litecoin address has been copied to clipboard."));}
+        xywh {350 100 88 22} box ENGRAVED_BOX
+        code0 {\#include <FL/fl_ask.H>}
+      }
+      Fl_Output output_monero_addr {
+        label Monero
+        xywh {20 160 320 22} box FLAT_BOX align 5
+        code0 {output_monero_addr->value("85u8DacasxPNvKzY5kEiprBnbydDqg26yGAVEw7mdwccNFsrXMWCE4VQnV2JVfh5BTRheNnpDJqYjbqPrVRLEPAKP3dsYgc");}
+      }
+      Fl_Button {} {
+        label Copy
+        callback {int len = this->output_monero_addr->size();
+this->output_monero_addr->position(0, len);
+this->output_monero_addr->copy(1);
+
+fl_message(_("Monero address has been copied to clipboard."));}
+        xywh {350 160 88 22} box ENGRAVED_BOX
+        code0 {\#include <FL/fl_ask.H>}
+      }
+      Fl_Button {} {
+        label {&Close}
+        callback {this->window_donate_crypto->hide();}
+        xywh {20 217 88 22} box ENGRAVED_BOX
+      }
+    }
+    Fl_Window window_stream_codec_settings {
+      label {Streaming Codec Settings}
+      xywh {790 333 395 305} type Double hide
+      class Fl_My_Double_Window
+    } {
+      Fl_Tabs {} {open
+        xywh {5 0 385 265}
+      } {
+        Fl_Group {} {
+          label MP3
+          xywh {5 20 385 245}
+        } {
+          Fl_Choice choice_stream_mp3_enc_quality {
+            label {Encoding Quality}
+            callback {choice_stream_mp3_enc_quality_cb();}
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {0 (best)}
+              xywh {0 0 36 21}
+            }
+            MenuItem {} {
+              label 1
+              xywh {10 10 36 21}
+            }
+            MenuItem {} {
+              label 2
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label {3 (default)}
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label 4
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label 5
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label 6
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label 7
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label 8
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label {9 (worst)}
+              xywh {80 80 36 21}
+            }
+          }
+          Fl_Choice choice_stream_mp3_stereo_mode {
+            label {Stereo Mode}
+            callback {choice_stream_mp3_stereo_mode_cb();}
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {Auto (default)}
+              xywh {10 10 36 21}
+            }
+            MenuItem {} {
+              label Stereo
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label {Joint Stereo}
+              xywh {20 20 36 21}
+            }
+          }
+          Fl_Choice choice_stream_mp3_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_stream_mp3_bitrate_mode_cb();}
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {CBR (default)}
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label VBR
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label ABR
+              xywh {40 40 36 21}
+            }
+          }
+          Fl_Choice choice_stream_mp3_vbr_quality {
+            label {VBR Quality}
+            callback {choice_stream_mp3_vbr_quality_cb();}
+            xywh {210 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {0 (best)}
+              xywh {10 10 36 21}
+            }
+            MenuItem {} {
+              label 1
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label 2
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label 3
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label {4 (default)}
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label 5
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label 6
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label 7
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label 8
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label {9 (worst)}
+              xywh {90 90 36 21}
+            }
+          }
+          Fl_Choice choice_stream_mp3_vbr_min_bitrate {
+            label {VBR min. Bitrate}
+            callback {choice_stream_mp3_vbr_min_bitrate_cb();}
+            xywh {25 170 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label 8k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 16k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 24k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label {32k (default)}
+              xywh {40 40 40 25}
+            }
+            MenuItem {} {
+              label 40k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 48k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 56k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 64k
+              xywh {80 80 40 25}
+            }
+            MenuItem {} {
+              label 80k
+              xywh {90 90 40 25}
+            }
+            MenuItem {} {
+              label 96k
+              xywh {100 100 40 25}
+            }
+            MenuItem {} {
+              label 112k
+              xywh {40 40 40 25}
+            }
+            MenuItem {} {
+              label 128k
+              xywh {110 110 40 25}
+            }
+            MenuItem {} {
+              label 160k
+              xywh {120 120 40 25}
+            }
+            MenuItem {} {
+              label 192k
+              xywh {130 130 40 25}
+            }
+            MenuItem {} {
+              label 224k
+              xywh {140 140 40 25}
+            }
+            MenuItem {} {
+              label 256k
+              xywh {150 150 40 25}
+            }
+            MenuItem {} {
+              label 320k
+              xywh {160 160 40 25}
+            }
+          }
+          Fl_Choice choice_stream_mp3_vbr_max_bitrate {
+            label {VBR max. Bitrate}
+            callback {choice_stream_mp3_vbr_max_bitrate_cb();}
+            xywh {210 170 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label 8k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 16k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 24k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 32k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 40k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 48k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 56k
+              xywh {80 80 40 25}
+            }
+            MenuItem {} {
+              label 64k
+              xywh {90 90 40 25}
+            }
+            MenuItem {} {
+              label 80k
+              xywh {100 100 40 25}
+            }
+            MenuItem {} {
+              label 96k
+              xywh {110 110 40 25}
+            }
+            MenuItem {} {
+              label 112k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 128k
+              xywh {120 120 40 25}
+            }
+            MenuItem {} {
+              label 160k
+              xywh {130 130 40 25}
+            }
+            MenuItem {} {
+              label 192k
+              xywh {140 140 40 25}
+            }
+            MenuItem {} {
+              label 224k
+              xywh {150 150 40 25}
+            }
+            MenuItem {} {
+              label 256k
+              xywh {160 160 40 25}
+            }
+            MenuItem {} {
+              label {320k (default)}
+              xywh {170 170 40 25}
+            }
+          }
+        }
+        Fl_Group {} {
+          label OGG
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Choice choice_stream_vorbis_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_stream_vorbis_bitrate_mode_cb();}
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {CBR (default)}
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label VBR
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label ABR
+              xywh {60 60 36 21}
+            }
+          }
+          Fl_Choice choice_stream_vorbis_vbr_quality {
+            label {VBR Quality}
+            callback {choice_stream_vorbis_vbr_quality_cb();}
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {1.0 (best, default)}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label {0.9}
+              xywh {120 120 36 21}
+            }
+            MenuItem {} {
+              label {0.8}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label {0.7}
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label {0.6}
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label {0.5}
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label {0.4}
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label {0.3}
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label {0.2}
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label {0.1}
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label {0.0 (worst)}
+              xywh {30 30 36 21}
+            }
+          }
+          Fl_Choice choice_stream_vorbis_vbr_min_bitrate {
+            label {VBR min. Bitrate}
+            callback {choice_stream_vorbis_vbr_min_bitrate_cb();} open
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {}
+          Fl_Choice choice_stream_vorbis_vbr_max_bitrate {
+            label {VBR max. Bitrate}
+            callback {choice_stream_vorbis_vbr_max_bitrate_cb();} open
+            xywh {210 110 165 20} down_box BORDER_BOX align 5
+          } {}
+        }
+        Fl_Group {} {
+          label OPUS
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Choice choice_stream_opus_audio_type {
+            label {Optimize for}
+            callback {choice_stream_opus_audio_type_cb();} open
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {Music (default)}
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label Speech
+              xywh {30 30 36 21}
+            }
+          }
+          Fl_Choice choice_stream_opus_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_stream_opus_bitrate_mode_cb();} open
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label CBR
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label {VBR (default)}
+              xywh {60 60 36 21}
+            }
+          }
+          Fl_Choice choice_stream_opus_quality {
+            label Quality
+            callback {choice_stream_opus_quality_cb();} open
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {10 (best, default)}
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label 9
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label 8
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label 7
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label 6
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label 5
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label 4
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label 3
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label 2
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label 1
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label {0 (worst)}
+              xywh {10 10 36 21}
+            }
+          }
+          Fl_Choice choice_stream_opus_bandwidth {
+            label {Max. Bandwidth}
+            callback {choice_stream_opus_bandwidth_cb();} open
+            xywh {210 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {20kHz (best,default)}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label 12kHz
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label 8kHz
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label 6kHz
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label {4kHz (worst)}
+              xywh {70 70 36 21}
+            }
+          }
+        }
+        Fl_Group tab_stream_aac {
+          label AAC
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Choice choice_stream_aac_profile {
+            label Profile
+            callback {choice_stream_aac_profile_cb();} open
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {Auto (default)}
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label {AAC-LC}
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label {HE-AACv1 (AAC+)}
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label {HE-AACv2 (eAAC+)}
+              xywh {110 110 36 21}
+            }
+          }
+          Fl_Choice choice_stream_aac_afterburner {
+            label Afterburner
+            callback {choice_stream_aac_afterburner_cb();} open
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {On (default)}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label Off
+              xywh {120 120 36 21}
+            }
+          }
+          Fl_Choice choice_stream_aac_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_stream_aac_bitrate_mode_cb();} open
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {CBR (default)}
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label VBR
+              xywh {40 40 36 21}
+            }
+          }
+        }
+        Fl_Group {} {
+          label FLAC
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Group {} {
+            label {Bit depth} open
+            xywh {20 50 355 50} box ENGRAVED_FRAME
+          } {
+            Fl_Round_Button radio_stream_flac_bit_depth_16 {
+              label {16 bit}
+              callback {radio_stream_flac_bit_depth_16_cb();}
+              xywh {95 65 70 20} type Radio down_box ROUND_DOWN_BOX
+            }
+            Fl_Round_Button radio_stream_flac_bit_depth_24 {
+              label {24 bit}
+              callback {radio_stream_flac_bit_depth_24_cb();}
+              xywh {236 65 79 20} type Radio down_box ROUND_DOWN_BOX
+            }
+          }
+        }
+      }
+      Fl_Button {} {
+        label {&Close}
+        callback {this->window_stream_codec_settings->hide();}
+        xywh {150 273 88 22} box ENGRAVED_BOX
+      }
+    }
+    Fl_Window window_rec_codec_settings {
+      label {Recording Codec Settings}
+      xywh {949 727 395 305} type Double hide
+      class Fl_My_Double_Window
+    } {
+      Fl_Tabs {} {open
+        xywh {5 0 385 265}
+      } {
+        Fl_Group {} {
+          label MP3
+          xywh {5 20 385 245}
+        } {
+          Fl_Choice choice_rec_mp3_enc_quality {
+            label {Encoding Quality}
+            callback {choice_rec_mp3_enc_quality_cb();}
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {0 (best)}
+              xywh {0 0 36 21}
+            }
+            MenuItem {} {
+              label 1
+              xywh {10 10 36 21}
+            }
+            MenuItem {} {
+              label 2
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label {3 (default)}
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label 4
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label 5
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label 6
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label 7
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label 8
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label {9 (worst)}
+              xywh {80 80 36 21}
+            }
+          }
+          Fl_Choice choice_rec_mp3_stereo_mode {
+            label {Stereo Mode}
+            callback {choice_rec_mp3_stereo_mode_cb();}
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {Auto (default)}
+              xywh {10 10 36 21}
+            }
+            MenuItem {} {
+              label Stereo
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label {Joint Stereo}
+              xywh {20 20 36 21}
+            }
+          }
+          Fl_Choice choice_rec_mp3_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_rec_mp3_bitrate_mode_cb();}
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {CBR (default)}
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label VBR
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label ABR
+              xywh {40 40 36 21}
+            }
+          }
+          Fl_Choice choice_rec_mp3_vbr_quality {
+            label {VBR Quality}
+            callback {choice_rec_mp3_vbr_quality_cb();}
+            xywh {210 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {0 (best)}
+              xywh {10 10 36 21}
+            }
+            MenuItem {} {
+              label 1
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label 2
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label 3
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label {4 (default)}
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label 5
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label 6
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label 7
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label 8
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label {9 (worst)}
+              xywh {90 90 36 21}
+            }
+          }
+          Fl_Choice choice_rec_mp3_vbr_min_bitrate {
+            label {VBR min. Bitrate}
+            callback {choice_rec_mp3_vbr_min_bitrate_cb();}
+            xywh {25 170 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label 8k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 16k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 24k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label {32k (default)}
+              xywh {40 40 40 25}
+            }
+            MenuItem {} {
+              label 40k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 48k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 56k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 64k
+              xywh {80 80 40 25}
+            }
+            MenuItem {} {
+              label 80k
+              xywh {90 90 40 25}
+            }
+            MenuItem {} {
+              label 96k
+              xywh {100 100 40 25}
+            }
+            MenuItem {} {
+              label 112k
+              xywh {40 40 40 25}
+            }
+            MenuItem {} {
+              label 128k
+              xywh {110 110 40 25}
+            }
+            MenuItem {} {
+              label 160k
+              xywh {120 120 40 25}
+            }
+            MenuItem {} {
+              label 192k
+              xywh {130 130 40 25}
+            }
+            MenuItem {} {
+              label 224k
+              xywh {140 140 40 25}
+            }
+            MenuItem {} {
+              label 256k
+              xywh {150 150 40 25}
+            }
+            MenuItem {} {
+              label 320k
+              xywh {160 160 40 25}
+            }
+          }
+          Fl_Choice choice_rec_mp3_vbr_max_bitrate {
+            label {VBR max. Bitrate}
+            callback {choice_rec_mp3_vbr_max_bitrate_cb();}
+            xywh {210 170 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label 8k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 16k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 24k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 32k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 40k
+              xywh {60 60 40 25}
+            }
+            MenuItem {} {
+              label 48k
+              xywh {70 70 40 25}
+            }
+            MenuItem {} {
+              label 56k
+              xywh {80 80 40 25}
+            }
+            MenuItem {} {
+              label 64k
+              xywh {90 90 40 25}
+            }
+            MenuItem {} {
+              label 80k
+              xywh {100 100 40 25}
+            }
+            MenuItem {} {
+              label 96k
+              xywh {110 110 40 25}
+            }
+            MenuItem {} {
+              label 112k
+              xywh {50 50 40 25}
+            }
+            MenuItem {} {
+              label 128k
+              xywh {120 120 40 25}
+            }
+            MenuItem {} {
+              label 160k
+              xywh {130 130 40 25}
+            }
+            MenuItem {} {
+              label 192k
+              xywh {140 140 40 25}
+            }
+            MenuItem {} {
+              label 224k
+              xywh {150 150 40 25}
+            }
+            MenuItem {} {
+              label 256k
+              xywh {160 160 40 25}
+            }
+            MenuItem {} {
+              label {320k (default)}
+              xywh {170 170 40 25}
+            }
+          }
+        }
+        Fl_Group {} {
+          label OGG open
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Choice choice_rec_vorbis_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_rec_vorbis_bitrate_mode_cb();}
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {CBR (default)}
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label VBR
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label ABR
+              xywh {60 60 36 21}
+            }
+          }
+          Fl_Choice choice_rec_vorbis_vbr_quality {
+            label {VBR Quality}
+            callback {choice_rec_vorbis_vbr_quality_cb();}
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {1.0 (best, default)}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label {0.9}
+              xywh {120 120 36 21}
+            }
+            MenuItem {} {
+              label {0.8}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label {0.7}
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label {0.6}
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label {0.5}
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label {0.4}
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label {0.3}
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label {0.2}
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label {0.1}
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label {0.0 (worst)}
+              xywh {30 30 36 21}
+            }
+          }
+          Fl_Choice choice_rec_vorbis_vbr_min_bitrate {
+            label {VBR min. Bitrate}
+            callback {choice_rec_vorbis_vbr_min_bitrate_cb();} open
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {}
+          Fl_Choice choice_rec_vorbis_vbr_max_bitrate {
+            label {VBR max. Bitrate}
+            callback {choice_rec_vorbis_vbr_max_bitrate_cb();} open
+            xywh {210 110 165 20} down_box BORDER_BOX align 5
+          } {}
+        }
+        Fl_Group {} {
+          label OPUS
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Choice choice_rec_opus_audio_type {
+            label {Optimize for}
+            callback {choice_rec_opus_audio_type_cb();} open
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {Music (default)}
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label Speech
+              xywh {30 30 36 21}
+            }
+          }
+          Fl_Choice choice_rec_opus_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_rec_opus_bitrate_mode_cb();} open
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label CBR
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label {VBR (default)}
+              xywh {60 60 36 21}
+            }
+          }
+          Fl_Choice choice_rec_opus_quality {
+            label Quality
+            callback {choice_rec_opus_quality_cb();} open
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {10 (best, default)}
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label 9
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label 8
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label 7
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label 6
+              xywh {70 70 36 21}
+            }
+            MenuItem {} {
+              label 5
+              xywh {60 60 36 21}
+            }
+            MenuItem {} {
+              label 4
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label 3
+              xywh {40 40 36 21}
+            }
+            MenuItem {} {
+              label 2
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label 1
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label {0 (worst)}
+              xywh {10 10 36 21}
+            }
+          }
+          Fl_Choice choice_rec_opus_bandwidth {
+            label {Max. Bandwidth}
+            callback {choice_rec_opus_bandwidth_cb();} open
+            xywh {210 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {20kHz (best,default)}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label 12kHz
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label 8kHz
+              xywh {90 90 36 21}
+            }
+            MenuItem {} {
+              label 6kHz
+              xywh {80 80 36 21}
+            }
+            MenuItem {} {
+              label {4kHz (worst)}
+              xywh {70 70 36 21}
+            }
+          }
+        }
+        Fl_Group tab_rec_aac {
+          label AAC
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Choice choice_rec_aac_profile {
+            label Profile
+            callback {choice_rec_aac_profile_cb();} open
+            xywh {25 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {Auto (default)}
+              xywh {20 20 36 21}
+            }
+            MenuItem {} {
+              label {AAC-LC}
+              xywh {50 50 36 21}
+            }
+            MenuItem {} {
+              label {HE-AACv1 (AAC+)}
+              xywh {100 100 36 21}
+            }
+            MenuItem {} {
+              label {HE-AACv2 (eAAC+)}
+              xywh {110 110 36 21}
+            }
+          }
+          Fl_Choice choice_rec_aac_afterburner {
+            label Afterburner
+            callback {choice_rec_aac_afterburner_cb();} open
+            xywh {210 50 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {On (default)}
+              xywh {110 110 36 21}
+            }
+            MenuItem {} {
+              label Off
+              xywh {120 120 36 21}
+            }
+          }
+          Fl_Choice choice_rec_aac_bitrate_mode {
+            label {Bitrate Mode}
+            callback {choice_rec_aac_bitrate_mode_cb();} open
+            xywh {25 110 165 20} down_box BORDER_BOX align 5
+          } {
+            MenuItem {} {
+              label {CBR (default)}
+              xywh {30 30 36 21}
+            }
+            MenuItem {} {
+              label VBR
+              xywh {40 40 36 21}
+            }
+          }
+        }
+        Fl_Group {} {
+          label FLAC
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Group {} {
+            label {Bit depth} open
+            xywh {20 50 355 50} box ENGRAVED_FRAME
+          } {
+            Fl_Round_Button radio_rec_flac_bit_depth_16 {
+              label {16 bit}
+              callback {radio_rec_flac_bit_depth_16_cb();}
+              xywh {95 65 70 20} type Radio down_box ROUND_DOWN_BOX
+            }
+            Fl_Round_Button radio_rec_flac_bit_depth_24 {
+              label {24 bit}
+              callback {radio_rec_flac_bit_depth_24_cb();}
+              xywh {236 65 79 20} type Radio down_box ROUND_DOWN_BOX
+            }
+          }
+        }
+        Fl_Group {} {
+          label WAV
+          xywh {5 20 385 245} hide
+        } {
+          Fl_Group {} {
+            label {Bit depth} open
+            xywh {20 50 355 50} box ENGRAVED_FRAME
+          } {
+            Fl_Round_Button radio_rec_wav_bit_depth_16 {
+              label {16 bit}
+              callback {radio_rec_wav_bit_depth_16_cb();}
+              xywh {80 65 70 20} type Radio down_box ROUND_DOWN_BOX
+            }
+            Fl_Round_Button radio_rec_wav_bit_depth_32 {
+              label {32 bit}
+              callback {radio_rec_wav_bit_depth_32_cb();}
+              xywh {260 65 79 20} type Radio down_box ROUND_DOWN_BOX
+            }
+            Fl_Round_Button radio_rec_wav_bit_depth_24 {
+              label {24 bit}
+              callback {radio_rec_wav_bit_depth_24_cb();}
+              xywh {170 65 70 20} type Radio down_box ROUND_DOWN_BOX
+            }
+          }
+        }
+      }
+      Fl_Button {} {
+        label {&Close}
+        callback {this->window_rec_codec_settings->hide();}
+        xywh {150 273 88 22} box ENGRAVED_BOX
+      }
+    }
+    Fl_Window window_mixer {
+      label {butt audio mixer}
+      xywh {780 593 430 450} type Double hide
+      class Fl_My_Double_Window
+    } {
+      Fl_Group {} {
+        label {Audio Mixer} open
+        xywh {15 32 405 397} box ENGRAVED_BOX align 5
+      } {
+        Fl_Slider slider_mixer_primary_device {
+          label {Primary
+Device}
+          user_data CB_CALLED_BY_USER
+          callback {slider_mixer_primary_device_cb(o->value(),v);}
+          xywh {43 65 17 245} type {Vert Knob} box NO_BOX labelsize 11 minimum 18 maximum -18 step 0.1 slider_size 0.1
+          code0 {slider_mixer_primary_device->default_value = 0.0;}
+          class Fl_My_Value_Slider
+        }
+        Fl_Slider slider_mixer_secondary_device {
+          label {Secondary
+Device}
+          user_data CB_CALLED_BY_USER
+          callback {slider_mixer_secondary_device_cb(o->value(),v);}
+          xywh {128 65 15 245} type {Vert Knob} box NO_BOX labelsize 11 minimum 18 maximum -18 step 0.1 slider_size 0.1
+          code0 {slider_mixer_secondary_device->default_value = 0.0;}
+          class Fl_My_Value_Slider
+        }
+        Fl_Text_Display text_mixer_primary_device_volume {
+          label {+0.0 dB}
+          xywh {22 63 55 10} box NO_BOX labelsize 11 align 9
+        }
+        Fl_Text_Display text_mixer_secondary_device_volume {
+          label {+0.0 dB}
+          xywh {105 63 55 10} box NO_BOX labelsize 11 align 9
+        }
+        Fl_Slider slider_mixer_recording_gain {
+          label {Recording
+Gain}
+          user_data CB_CALLED_BY_USER
+          callback {slider_mixer_recording_gain_cb(o->value(),v);}
+          xywh {288 65 15 245} type {Vert Knob} box NO_BOX labelsize 11 minimum 18 maximum -18 step 0.1 slider_size 0.1
+          code0 {slider_mixer_recording_gain->default_value = 0.0;}
+          class Fl_My_Value_Slider
+        }
+        Fl_Text_Display text_mixer_recording_volume {
+          label {+0.0 dB}
+          xywh {271 63 50 10} box NO_BOX labelsize 11 align 9
+        }
+        Fl_Slider slider_mixer_streaming_gain {
+          label {Streaming
+Gain}
+          user_data CB_CALLED_BY_USER
+          callback {slider_mixer_streaming_gain_cb(o->value(),v);}
+          xywh {208 65 15 245} type {Vert Knob} box NO_BOX labelsize 11 minimum 18 maximum -18 step 0.1 slider_size 0.1
+          code0 {slider_mixer_streaming_gain->default_value = 0.0;}
+          class Fl_My_Value_Slider
+        }
+        Fl_Text_Display text_mixer_streaming_volume {
+          label {+0.0 dB}
+          xywh {190 63 50 10} box NO_BOX labelsize 11 align 9
+        }
+        Fl_Light_Button button_mixer_mute_primary_device {
+          label Mute
+          callback {button_mixer_mute_primary_device_cb()}
+          tooltip Mute xywh {30 340 45 20} box THIN_UP_FRAME selection_color 1 labelsize 11
+        }
+        Fl_Light_Button button_mixer_mute_secondary_device {
+          label Mute
+          callback {button_mixer_mute_secondary_device_cb()}
+          tooltip Mute xywh {115 340 45 20} box THIN_UP_FRAME selection_color 1 labelsize 11
+        }
+        Fl_Box {} {
+          label {|}
+          xywh {205 388 25 20} labelsize 11 align 16
+        }
+        Fl_Slider slider_mixer_cross_fader {
+          label {
+Cross Fader}
+          user_data CB_CALLED_BY_USER
+          callback {slider_mixer_cross_fader_cb(o->value(),v);}
+          xywh {30 385 375 15} type {Horz Knob} box NO_BOX labelsize 11 minimum -100 maximum 100 step 1 slider_size 0.1
+          code0 {slider_mixer_cross_fader->default_value = 0.0;}
+          code1 {slider_mixer_cross_fader->hide_tipwin = true;}
+          class Fl_My_Value_Slider
+        }
+        Fl_Box {} {
+          label {Primary
+Device}
+          xywh {25 398 85 26} labelsize 11 align 20
+        }
+        Fl_Box {} {
+          label {Secondary
+Device}
+          xywh {310 398 95 27} labelsize 11 align 24
+        }
+        Fl_Slider slider_mixer_master_gain {
+          label {Master
+Gain}
+          user_data CB_CALLED_BY_USER
+          callback {slider_mixer_master_gain_cb(o->value(),v);}
+          xywh {368 65 15 245} type {Vert Knob} box NO_BOX labelsize 11 minimum 24 maximum -24 step 0.1 slider_size 0.1
+          code0 {slider_mixer_master_gain->default_value = 0.0;}
+          class Fl_My_Value_Slider
+        }
+        Fl_Text_Display text_mixer_master_volume {
+          label {+0.0 dB}
+          xywh {352 63 50 10} box NO_BOX labelsize 11 align 9
+        }
+      }
+      Fl_Button {} {
+        label Reset
+        callback {button_mixer_reset_cb();}
+        xywh {340 11 80 19} box ENGRAVED_BOX labelsize 12
+      }
+    }
+  }
+  Function {~flgui()} {open
+  } {
+    code {return;} {}
+  }
+}

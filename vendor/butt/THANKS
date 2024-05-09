@@ -1,0 +1,22 @@
+butt THANKS file
+
+butt has originally been written by Daniel Nöthen. Many people have further
+contributed to butt by reporting problems, suggesting various improvements,
+writing tutorials or even submitting code. Thanks to all of you!
+
+Special thanks go to:
+Heinrich Unrau, for suggestion me the name "butt"
+Thomas Ziebura, for teaching me C
+Jorge Suárez de Lis, for creating ubuntu packages
+Dominik Durner, for creating a patch for icecast stream infos
+Subrat (ipapuna) Nayak, for creating the icon and releasing it under cc
+Mikko Pikarinen, for writing a huge patch with some nice features
+Melchor Garau Madrigal, for forking butt and releasing it on github with new features 
+Thomas Preece, for adding the dynamic range compressor 
+Ivan Radolovic, for developing the butt agent
+Hossam Hammady, for adding threshold limit control commands and butt-client
+
+Not to forget the developers of all the libraries butt depends on!
+
+Drop me a mail in case I forgot to mention you ;-)
+

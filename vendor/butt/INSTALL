@@ -1,0 +1,47 @@
+Installation:
+-------------
+OS X: 
+Mount the butt-<version>.dmg by double clicking and 
+drop the butt file into the Applications folder.
+
+WINDOWS: 
+Just run the butt-<version>-setup.exe as usual and go through the
+installer pages.
+The default installation path might be unusual, but this way it is possible to install
+butt without administration rights.
+
+Linux/MinGW (Windows):
+First of all the following libraries have to be installed on your system  
+fltk-1.3, portaudio19, libmp3lame, libvorbis, libogg, libflac, 
+libopus, libsamplerate, libfdk-aac, libdbus-1, libcurl, libssl, portmidi 
+They are quite common and should be included in every popular linux distribution. 
+
+On Ubuntu you can install them with 
+sudo apt-get install libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev \
+libogg-dev libflac-dev libfdk-aac-dev libdbus-1-dev libsamplerate0-dev \
+libssl-dev libcurl4-openssl-dev libportmidi-dev \
+
+On openSUSE you can install them with 
+sudo zypper in fltk-devel portaudio-devel libmp3lame-devel libvorbis-devel libogg-devel flac-devel \
+libfdk-aac-devel libopus-devel libopenssl-devel libopus-devel libsamplerate-devel dbus-1-devel \
+libcurl-devel portmidi-devel
+
+On Distributions which don't have libfdk-aac like Debian you can compile without aac support: 
+./configure --disable-aac
+
+For compiling on Windows I recommend the msys2 x64 (www.msys2.org) environment.
+They have all the needed packages in their pacman repository. Additionally you need to install the libwinpthread-git package. 
+Make sure that you select the x64 version of each package.
+
+After installing the above libraries you can install butt from source as usual:
+
+tar -xzf butt-<version>.tar.gz
+cd butt-<version>
+./configure
+make
+sudo make install
+
+ 
+In case the included configure script or the make process fails on your system, try to create a new configure script by invoking:
+autoreconf -i and start with ./configure again.
+
