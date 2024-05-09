@@ -222,3 +222,12 @@ stamp-*
 /gmp*
 /isl*
 /gettext*
+
+# Proprietary (?)
+# Generate with `sdef $PATH_TO_APP | sdp -fh --basename $HEADER_NAME`
+# from /System/Applications/Music.app
+iTunes.h
+# from /Applications/VOX.app
+VOX.h
+# from /Applications/Spotify.app
+Spotify.h
