@@ -9,6 +9,6 @@
 #ifndef AskForMicPermission_h
 #define AskForMicPermission_h
 
-void askForMicPermission();
+extern "C" void askForMicPermission();
 
 #endif /* AskForMicPermission_h */

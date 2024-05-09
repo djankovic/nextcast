@@ -53,7 +53,7 @@ int get_codec_index(char *codec);
 int get_midi_ctrl_type(int midi_command);
 
 typedef const char *(*currentTrackFunction)(int);
-extern currentTrackFunction getCurrentTrackFunctionFromId(int i);
+extern "C" currentTrackFunction getCurrentTrackFunctionFromId(int i);
 int exec_midi_command(int command_id, int value);
 void populate_midi_dev_list(void);
 
