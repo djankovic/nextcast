@@ -36,16 +36,21 @@ A live streaming suite using state of the art protocols to enable low latency an
 
 
 ## Supported source protocols (ingestion)
-
-1. Icecast
+### Pulling from other sources
+1. ADTS/MP3 from an Icecast or Shoutcast® server
     - Tested with Shoutcast® v1.9.8 and v2.5.1
-2. RIST (VSF TR-06-2:2021, Main profile)
+
+### Pushing to Nextcast
+1. RIST (VSF TR-06-2:2021, Main profile)
     - Stream encryption (AES-128-CTR / AES-256-CTR) is **required**, eg. as `secret=$PSK` and `aes-type=128|256` parameters in the RIST URL. Unencrypted packets will be discarded.
     - Tested with [OBS](https://obsproject.com) 29.0, [FFmpeg](https://ffmpeg.org) 5.1, and [libRIST](https://code.videolan.org/rist/librist) 0.2.7
       - [OBS](https://obsproject.com) >=28.0, [FFmpeg](https://ffmpeg.org) >=4.4, and [libRIST](https://code.videolan.org/rist/librist) >=0.2.0 are also expected to work
-3. MPEG-TS over TLS over TCP
+2. MPEG-TS over TLS over TCP
     - Tested with [FFmpeg](https://ffmpeg.org) 7.0, eg. `ffmpeg -i ... -f mpegts -cert_file $CERTFILE -key_file $KEYFILE tls://$IP:PORT`
     - A client certificate is mandatory
+3. ADTS/MP3 over HTTP
+    - Tested with a [fork](https://github.com/djankovic/nextcast/tree/main/vendor/butt) of Daniel Nöthen's [butt](https://danielnoethen.de/butt/), adding support for Transfer-Encoding: chunked
+    - Requires HTTP/1.1
 
 ## Supported sink protocols (distribution)
 
