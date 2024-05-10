@@ -62,6 +62,7 @@ float *record_buf;
 int framepacket_size;
 int framepacket_size2;
 int samplerate_dev2;
+int enc_buf_size;
 
 bool try_to_connect;
 bool pa_new_frames;
@@ -227,6 +228,8 @@ int snd_open_streams(void)
     rb_init(&rec_rb, 16 * framepacket_size * sizeof(float));
     rb_init(&stream_rb, 16 * framepacket_size * sizeof(float));
     rb_init(&pa_pcm_rb, 16 * framepacket_size * sizeof(float));
+
+    enc_buf_size = stream_rb.size * 10;
 
     pa_params.device = pa_dev_id;
     pa_params.channelCount = pa_dev_info->maxInputChannels;
@@ -785,8 +788,8 @@ void *snd_stream_thread(void *data)
     int encode_bytes_read = 0;
     int bytes_to_read;
 
-    char *enc_buf = (char *)malloc(stream_rb.size * sizeof(char) * 10);
-    char *audio_buf = (char *)malloc(stream_rb.size * sizeof(char) * 10);
+    char *enc_buf = (char *)malloc(enc_buf_size);
+    char *audio_buf = (char *)malloc(enc_buf_size);
 
     int (*xc_send)(char *buf, int buf_len) = NULL;
 

@@ -48,6 +48,8 @@ enum {
     SND_REC = 1,
 };
 
+extern int enc_buf_size;
+
 extern bool try_to_connect;
 extern bool pa_new_frames;
 extern bool reconnect;

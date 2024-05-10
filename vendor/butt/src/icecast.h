@@ -31,6 +31,7 @@ enum {
 
 int ic_init(void);
 int ic_connect(void);
+int ic_send_raw(char *buf, int buf_len);
 int ic_send(char *buf, int buf_len);
 int ic_update_song(char *song_name);
 int ic_get_listener_count(void);

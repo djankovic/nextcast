@@ -13,6 +13,7 @@
 // GNU General Public License for more details.
 //
 
+#include <algorithm>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -55,6 +56,7 @@ tls_t stream_tls;
 #endif
 
 int server_type = IC_TYPE_UNKNOWN;
+char *send_buf = NULL;
 
 int ic_recv(char *buf, int buf_len);
 
@@ -67,7 +69,6 @@ int ic_connect(void)
     char auth[150];
     char b64_auth[200];
     char recv_buf[1000];
-    char send_buf[2048];
     char msg[256];
     char *b64_enc;
     char *http_retval;
@@ -177,23 +178,30 @@ int ic_connect(void)
             }
         }
 #endif // HAVE_LIBSSL
+        
+        // accomodate at least 2048 bytes or a http chunk 
+        // (chunk = buffer size as hex string + \r\n + binary buffer + \r\n)
+        int hex_digits = (log(enc_buf_size) / log(16) + 1.0);
+        int send_buf_size = std::max(2048, (hex_digits + 2 + enc_buf_size + 2));
+        
+        send_buf = (char *)malloc(send_buf_size);
         if (try_cnt == 0) {
             // Try PUT method first. Supported since icecast 2.4.0
             if (cfg.srv[cfg.selected_srv]->mount[0] != '/') {
-                snprintf(send_buf, sizeof(send_buf), "PUT /%s HTTP/1.1\r\n", cfg.srv[cfg.selected_srv]->mount);
+                snprintf(send_buf, send_buf_size, "PUT /%s HTTP/1.1\r\n", cfg.srv[cfg.selected_srv]->mount);
             }
             else {
-                snprintf(send_buf, sizeof(send_buf), "PUT %s HTTP/1.1\r\n", cfg.srv[cfg.selected_srv]->mount);
+                snprintf(send_buf, send_buf_size, "PUT %s HTTP/1.1\r\n", cfg.srv[cfg.selected_srv]->mount);
             }
 
             opus_supported = 1;
         }
         else {
             if (cfg.srv[cfg.selected_srv]->mount[0] != '/') {
-                snprintf(send_buf, sizeof(send_buf), "SOURCE /%s HTTP/1.0\r\n", cfg.srv[cfg.selected_srv]->mount);
+                snprintf(send_buf, send_buf_size, "SOURCE /%s HTTP/1.0\r\n", cfg.srv[cfg.selected_srv]->mount);
             }
             else {
-                snprintf(send_buf, sizeof(send_buf), "SOURCE %s HTTP/1.0\r\n", cfg.srv[cfg.selected_srv]->mount);
+                snprintf(send_buf, send_buf_size, "SOURCE %s HTTP/1.0\r\n", cfg.srv[cfg.selected_srv]->mount);
             }
         }
 
@@ -201,30 +209,30 @@ int ic_connect(void)
         b64_enc = util_base64_enc(auth);
         snprintf(b64_auth, sizeof(b64_auth), "%s", b64_enc);
         free(b64_enc);
-        snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "Authorization: Basic %s\r\n", b64_auth);
+        snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Authorization: Basic %s\r\n", b64_auth);
 
         // Make butt compatible to proxies/load balancers. Thanks to boyska
         if (cfg.srv[cfg.selected_srv]->port == 80) {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "Host: %s\r\n", cfg.srv[cfg.selected_srv]->addr);
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Host: %s\r\n", cfg.srv[cfg.selected_srv]->addr);
         }
         else {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "Host: %s:%d\r\n", cfg.srv[cfg.selected_srv]->addr,
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Host: %s:%d\r\n", cfg.srv[cfg.selected_srv]->addr,
                      cfg.srv[cfg.selected_srv]->port);
         }
 
         // ic_send(send_buf, (int)strlen(send_buf));
 
-        snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "User-Agent: %s\r\n", PACKAGE_STRING);
+        snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "User-Agent: %s\r\n", PACKAGE_STRING);
         // ic_send(send_buf, (int)strlen(send_buf));
 
         if (!strcmp(cfg.audio.codec, "mp3")) {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "Content-Type: audio/mpeg\r\n");
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Content-Type: audio/mpeg\r\n");
         }
         else if (!strcmp(cfg.audio.codec, "aac")) {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "Content-Type: audio/aac\r\n");
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Content-Type: audio/aac\r\n");
         }
         else {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "Content-Type: audio/ogg\r\n");
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Content-Type: audio/ogg\r\n");
         }
 
         if (cfg.main.num_of_icy > 0) {
@@ -233,36 +241,36 @@ int ic_connect(void)
                 expand_string(&icy_name);
                 strrpl(&icy_name, (char *)"%N", cfg.srv[cfg.selected_srv]->name, MODE_ALL);
             }
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "ice-name: %s\r\n", icy_name);
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "ice-name: %s\r\n", icy_name);
             free(icy_name);
         }
         else {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "ice-name: no name\r\n");
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "ice-name: no name\r\n");
         }
 
         if (cfg.main.num_of_icy > 0) {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "ice-public: %s\r\n", cfg.icy[cfg.selected_icy]->pub);
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "ice-public: %s\r\n", cfg.icy[cfg.selected_icy]->pub);
         }
         else {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "ice-public: 0\r\n");
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "ice-public: 0\r\n");
         }
 
         if (cfg.main.num_of_icy > 0) {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "ice-url: %s\r\n", cfg.icy[cfg.selected_icy]->url);
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "ice-genre: %s\r\n", cfg.icy[cfg.selected_icy]->genre);
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "ice-url: %s\r\n", cfg.icy[cfg.selected_icy]->url);
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "ice-genre: %s\r\n", cfg.icy[cfg.selected_icy]->genre);
 
             char *icy_desc = strdup(cfg.icy[cfg.selected_icy]->desc);
             if (cfg.icy[cfg.selected_icy]->expand_variables == 1) {
                 expand_string(&icy_desc);
                 strrpl(&icy_desc, (char *)"%N", cfg.srv[cfg.selected_srv]->name, MODE_ALL);
             }
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "ice-description: %s\r\n", icy_desc);
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "ice-description: %s\r\n", icy_desc);
             free(icy_desc);
         }
 
         // Send audio settings
         if (!strcmp(cfg.audio.codec, "flac")) { // Do not send bitrate information if flac is used
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf),
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf),
                      "ice-audio-info: "
                      "ice-channels=%d;"
                      "ice-samplerate=%d"
@@ -270,7 +278,7 @@ int ic_connect(void)
                      cfg.audio.channel, strcmp(cfg.audio.codec, "opus") == 0 ? 48000 : cfg.audio.samplerate);
         }
         else {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf),
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf),
                      "ice-audio-info: "
                      "ice-bitrate=%d;"
                      "ice-channels=%d;"
@@ -283,13 +291,14 @@ int ic_connect(void)
 
         if (try_cnt == 0) // PUT
         {
-            snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "Expect: 100-continue\r\n");
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Transfer-Encoding: chunked\r\n");
+            snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "Expect: 100-continue\r\n");
             // ic_send(send_buf, (int)strlen(send_buf));
         }
 
-        snprintf(send_buf + strlen(send_buf), sizeof(send_buf) - strlen(send_buf), "\r\n");
+        snprintf(send_buf + strlen(send_buf), send_buf_size - strlen(send_buf), "\r\n");
 
-        ic_send(send_buf, (int)strlen(send_buf));
+        ic_send_raw(send_buf, (int)strlen(send_buf));
 
         ret = ic_recv(recv_buf, sizeof(recv_buf) - 1);
 
@@ -441,7 +450,7 @@ int ic_connect(void)
     return IC_OK;
 }
 
-int ic_send(char *buf, int buf_len)
+int ic_send_raw(char *buf, int buf_len) 
 {
     int ret;
     if (cfg.srv[cfg.selected_srv]->tls == 1) {
@@ -459,6 +468,23 @@ int ic_send(char *buf, int buf_len)
     }
 
     return ret;
+}
+
+int ic_send(char *buf, int buf_len)
+{
+    int send_size = 0;
+
+    if (cfg.srv[cfg.selected_srv]->icecast_protocol == ICECAST_PROTOCOL_PUT) {
+        send_size = sprintf(&send_buf[0], "%x\r\n", buf_len);
+        memcpy(&send_buf[send_size], &buf[0], buf_len);
+        sprintf(&send_buf[send_size + buf_len], "\r\n");
+        send_size = send_size + buf_len + 2;
+    } else {
+        memcpy(send_buf, buf, buf_len);
+        send_size = buf_len;
+    }
+
+    return ic_send_raw(send_buf, send_size);
 }
 
 int ic_recv(char *buf, int buf_len)
@@ -599,6 +625,7 @@ void ic_disconnect(void)
     }
 #endif
 
+    free(send_buf);
     sock_close(stream_socket);
 }
 
