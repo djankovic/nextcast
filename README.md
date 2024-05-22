@@ -47,7 +47,6 @@ A live streaming suite using state of the art protocols to enable low latency an
       - [OBS](https://obsproject.com) >=28.0, [FFmpeg](https://ffmpeg.org) >=4.4, and [libRIST](https://code.videolan.org/rist/librist) >=0.2.0 are also expected to work
 2. MPEG-TS over TLS over TCP
     - Tested with [FFmpeg](https://ffmpeg.org) 7.0, eg. `ffmpeg -i ... -f mpegts -cert_file $CERTFILE -key_file $KEYFILE tls://$IP:PORT`
-    - A client certificate is mandatory
 3. ADTS/MP3 over HTTP
     - Tested with a [fork](https://github.com/djankovic/nextcast/tree/main/vendor/butt) of Daniel Nöthen's [butt](https://danielnoethen.de/butt/), adding support for Transfer-Encoding: chunked
     - Requires HTTP/1.1
