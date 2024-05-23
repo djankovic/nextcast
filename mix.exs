@@ -4,7 +4,7 @@ defmodule Nextcast.MixProject do
   def project do
     [
       app: :nextcast,
-      version: "0.25.0",
+      version: "0.25.1",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       test_paths: ["lib"],
