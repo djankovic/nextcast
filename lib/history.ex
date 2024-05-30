@@ -17,6 +17,23 @@ defmodule Nextcast.History do
     end
   end
 
+  def get_since(stream, time) do
+    with {:ok, %{rows: rows}} <-
+           Nextcast.DB.query(
+             """
+             select time, raw_track
+             from history
+             where stream = $1 and time > $2
+             order by time desc
+             """,
+             [stream, time]
+           ) do
+      rows
+    else
+      _ -> []
+    end
+  end
+
   def insert(stream, items) do
     Nextcast.DB.query(
       """
