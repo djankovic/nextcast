@@ -43,12 +43,12 @@ defmodule Nextcast.History do
       #{1..Enum.count(items)//1 |> Enum.map(fn i -> "($1, $#{i * 2}, $#{i * 2 + 1})" end) |> Enum.join(",")}
       on conflict do nothing
       """,
-      ["#{stream}"] ++ List.flatten(items)
+      ["#{stream}"] ++ Enum.flat_map(items, &Tuple.to_list/1)
     )
   end
 
   def insert(stream, time, raw_track) do
-    insert(stream, [[time, raw_track]])
+    insert(stream, [{time, raw_track}])
   end
 
   def remove(stream, time) do
