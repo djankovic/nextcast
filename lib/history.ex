@@ -1,4 +1,11 @@
 defmodule Nextcast.History do
+  defp map_get_rows(rows) do
+    Enum.map(rows, fn [time, query] ->
+      pretty_track = Nextcast.ExtendedMetadata.parse(query) |> Nextcast.ExtendedMetadata.to_query()
+      {time, pretty_track}
+    end)
+  end
+
   def get(stream, limit \\ 20) do
     with {:ok, %{rows: rows}} <-
            Nextcast.DB.query(
@@ -11,7 +18,7 @@ defmodule Nextcast.History do
              """,
              ["#{stream}", limit]
            ) do
-      rows
+      map_get_rows(rows)
     else
       _ -> []
     end
@@ -28,7 +35,7 @@ defmodule Nextcast.History do
              """,
              [stream, time]
            ) do
-      rows
+      map_get_rows(rows)
     else
       _ -> []
     end
