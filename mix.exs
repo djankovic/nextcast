@@ -29,6 +29,7 @@ defmodule Nextcast.MixProject do
       {:jason, "~> 1.4"},
       {:postgrex, "~> 0.17"},
       {:bcrypt_elixir, "~> 3.1"},
+      {:zoneinfo, "~> 0.1.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
