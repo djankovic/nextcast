@@ -5,7 +5,7 @@ on:
 
 jobs:
   create_release:
-    runs-on: 'ubuntu-22.04'
+    runs-on: 'self-hosted'
     steps:
       - uses: 'actions/checkout@v4'
         with:
@@ -37,7 +37,7 @@ jobs:
           path: '~/.pnpm-store'
           key: pnpm-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('**/pnpm-lock.yaml') }}
       - uses: 'asdf-vm/actions/install@v3'
-      - run: 'corepack enable && corepack prepare pnpm@latest-9 --activate && pnpm config set store-dir ~/.pnpm-store && pnpm install'
+      - run: 'corepack enable && corepack prepare pnpm@latest-9 --activate && asdf reshim nodejs && pnpm config set store-dir ~/.pnpm-store && pnpm install'
       - run: 'NODE_ENV=production pnpm run build && MIX_ENV=prod mix deps.get && MIX_ENV=prod mix compile'
       - run: 'MIX_ENV=prod mix release --overwrite --no-compile && cd _build/prod/rel/nextcast && tar -czf ../nextcast-${{ env.tag }}-${{ env.sha_short }}.tar.gz *'
       - uses: actions/upload-artifact@v4
