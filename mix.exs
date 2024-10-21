@@ -24,6 +24,7 @@ defmodule Nextcast.MixProject do
   defp deps do
     [
       {:cowboy, "~> 2.9"},
+      {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.6"},
       {:postgrex, "~> 0.17"},
       {:zoneinfo, "~> 0.1.0"},
