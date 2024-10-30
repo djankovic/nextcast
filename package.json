@@ -3,12 +3,12 @@
   "dependencies": {
     "butterchurn": "3.0.0-beta.4",
     "butterchurn-presets": "3.0.0-beta.4",
-    "hls.js": "^1.5.8",
-    "uplot": "^1.6.30"
+    "hls.js": "^1.5.17",
+    "uplot": "^1.6.31"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.7.1",
-    "esbuild": "^0.20.2"
+    "@biomejs/biome": "^1.9.4",
+    "esbuild": "^0.24.0"
   },
   "engines": {
     "node": ">=18",
