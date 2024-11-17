@@ -11,7 +11,6 @@ A live streaming suite using state of the art protocols to enable low latency an
 
 ## Runtime dependencies
 
-- [LibreSSL](https://www.libressl.org) >= 3.6.0, [quicTLS](https://github.com/quictls/openssl) >= 1.1.1, or [wolfSSL](https://www.wolfssl.com) >= 5.6.0
 - [PostgreSQL](https://www.postgresql.org) >=16.0
 
 ## Build requirements
@@ -48,8 +47,10 @@ A live streaming suite using state of the art protocols to enable low latency an
 2. MPEG-TS over TLS over TCP
     - Tested with [FFmpeg](https://ffmpeg.org) 7.0, eg. `ffmpeg -i ... -f mpegts -cert_file $CERTFILE -key_file $KEYFILE tls://$IP:PORT`
 3. ADTS/MP3 over HTTP
-    - Tested with a [fork](https://github.com/djankovic/nextcast/tree/main/vendor/butt) of Daniel Nöthen's [butt](https://danielnoethen.de/butt/), adding support for Transfer-Encoding: chunked
+    - Tested with a [fork](https://github.com/djankovic/nextcast/tree/main/packages/butt) of Daniel Nöthen's [butt](https://danielnoethen.de/butt/), adding support for Transfer-Encoding: chunked
     - Requires HTTP/1.1
+4. Opus via WebRTC (with WHIP)
+    - Experimental
 
 ## Supported sink protocols (distribution)
 
@@ -59,21 +60,25 @@ A live streaming suite using state of the art protocols to enable low latency an
 ## Codec support / transcoding matrix
 
 ```
-                ┌───────────────+───────────────+───────────────┐
-          +─────+ MP3 (ADTS)    | AAC-LC (ADTS) | H264 (High 4) |
-  ┌────┐  | OUT | mp4a.40.34    | mp4a.40.2     | avc1.64001f   |
-  | IN |  +─────+ HLS, Icecast  | HLS, Icecast  | HLS           |
-┌─+────+────────+───────────────+───────────────+───────────────+
-| MP3           |               |               |               |
-| mp4a.40.34    |       ✔       |       ✘       |       ✘       |
-| ADTS, Icecast |               |               |               |
-+───────────────+───────────────+───────────────+───────────────+
-| AAC-LC        |               |               |               |
-| mp4a.40.2     |       ✘       |       ✔       |       ✘       |
-| ADTS, Icecast |               |               |               |
-+───────────────+───────────────+───────────────+───────────────+
-| H264 (High 4) |               |               |               |
-| avc1.64001f   |       ✘       |       ✘       |       ✔       |
-| RIST          |               |               |               |
-└───────────────+───────────────+───────────────+───────────────┘
+                ┌───────────────+───────────────+───────────────+───────────────┐
+          +─────+ MP3           | AAC-LC        | H264 (High 4) | Opus          |
+  ┌────┐  | OUT | MPEG-2 Audio  | ADTS          | MPEG-TS       | N/A           |
+  | IN |  +─────+ HLS, Icecast  | HLS, Icecast  | HLS           | Icecast       |
+┌─+────+────────+───────────────+───────────────+───────────────+───────────────+
+| MP3           |               |               |               |               |
+| MPEG-2 Audio  |       ✔       |       ✘       |       ✘       |       ✘       |
+| Icecast       |               |               |               |               |
++───────────────+───────────────+───────────────+───────────────+───────────────+
+| AAC-LC        |               |               |               |               |
+| ADTS          |       ✘       |       ✔       |       ✘       |       ✘       |
+| Icecast       |               |               |               |               |
++───────────────+───────────────+───────────────+───────────────+───────────────+
+| H264 (High 4) |               |               |               |               |
+| MPEG-TS       |       ✘       |       ✘       |       ✔       |       ✘       |
+| RIST          |               |               |               |               |
++───────────────+───────────────+───────────────+───────────────+───────────────+
+| Opus          |               |               |               |               |
+| N/A           |       ✘       |       ✘       |       ✘       |       ✔       |
+| WebRTC-WHIP   |               |               |               |               |
+└───────────────+───────────────+───────────────+───────────────+───────────────┘
 ```
