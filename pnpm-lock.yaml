@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@microsoft/fetch-event-source':
+        specifier: ^2.0.1
+        version: 2.0.1
       butterchurn:
         specifier: 3.0.0-beta.4
         version: 3.0.0-beta.4
@@ -234,6 +237,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@microsoft/fetch-event-source@2.0.1':
+    resolution: {integrity: sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA==}
+
   butterchurn-presets@3.0.0-beta.4:
     resolution: {integrity: sha512-TbQLUPvGOYMZAtWKoCmBtludh9aQZ6NaMGQU4lvPeadBPy3Du3yNmwBjlTMLP5c5mRWElxQPjTL1PtR7FZK3OQ==}
 
@@ -374,6 +380,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.24.0':
     optional: true
+
+  '@microsoft/fetch-event-source@2.0.1': {}
 
   butterchurn-presets@3.0.0-beta.4:
     dependencies:
