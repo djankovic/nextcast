@@ -76,6 +76,10 @@ config :nextcast, Nextcast.Auth, [
   secret_key_base: System.get_env("AUTH_SECRET_KEY_BASE"),
 ]
 
+config :logger, Nextcast.LogStreamer,
+  level: :info,
+  metadata: [:module]
+
 config :logger, :console,
   level: :info,
   metadata: [:module, :function, :line]
