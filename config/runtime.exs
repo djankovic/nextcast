@@ -1,19 +1,12 @@
 import Config
 
 config :nextcast, Nextcast.TCPServer, [
-  transport: (if config_env() == :prod, do: :ranch_tcp, else: :ranch_ssl),
-
   transport_opts: (if config_env() in [:prod], do: [
     ip: {:local, System.get_env("TCP_UNIX_SOCKET", "nextcast.sock")},
     port: 0
   ], else: [
     port: System.get_env("TCP_PORT", "8888") |> Integer.parse |> elem(0),
-    certfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}.pem"]),
-    keyfile: Application.app_dir(:nextcast, ["priv", "#{Atom.to_string(config_env())}-key.pem"]),
-    alpn_preferred_protocols: ["h2", "http/1.1"],
   ]),
-
-  protocol: (if config_env() == :prod, do: :cowboy_clear, else: :cowboy_tls),
 ]
 
 config :nextcast, Nextcast.DB, [

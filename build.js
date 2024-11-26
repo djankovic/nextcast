@@ -15,10 +15,13 @@ const isProduction = process.env.NODE_ENV === "production"
 
 const publicPath = "/static/assets/"
 const context = await esbuild.context({
+  define: {
+    DEV: (!isProduction).toString(),
+  },
   entryPoints,
   outdir,
   outbase,
-  entryNames: "[dir]/[name]-[hash]",
+  entryNames: isProduction ? "[dir]/[name]-[hash]" : undefined,
   format: "esm",
   publicPath,
   bundle: true,
@@ -86,7 +89,8 @@ end
 
 if (!isProduction) {
   await context.watch()
-  console.info("[build.js] Watching...")
+  const { host, port } = await context.serve({ port: (+process.env.TCP_PORT || 8000) + 1 });
+  console.info(`[build.js] Watching and serving on ${host}:${port}...`)
 } else {
   await context.rebuild()
   console.info("[build.js] Done!")
