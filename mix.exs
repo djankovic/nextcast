@@ -4,7 +4,7 @@ defmodule Nextcast.MixProject do
   def project do
     [
       app: :nextcast,
-      version: "0.32.0",
+      version: "0.33.0",
       elixir: "~> 1.17",
       start_permanent: Mix.env() == :prod,
       test_paths: ["lib"],
@@ -24,7 +24,7 @@ defmodule Nextcast.MixProject do
   defp deps do
     [
       {:cowboy, "~> 2.9"},
-      {:ex_webrtc, "~> 0.6.2"},
+      {:ex_webrtc, "~> 0.7"},
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.6"},
       {:postgrex, "~> 0.17"},
