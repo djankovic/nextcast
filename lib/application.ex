@@ -16,7 +16,8 @@ defmodule Nextcast.Application do
       configured_spec(Nextcast.DB),
       configured_spec(Nextcast.PubSub),
       configured_spec(Nextcast.StreamSupervisor),
-      configured_spec(Nextcast.TCPServer)
+      configured_spec(Nextcast.Track),
+      configured_spec(Nextcast.TCPServer),
     ]
 
     opts = [strategy: :one_for_one, name: Nextcast.Supervisor]
