@@ -20,6 +20,9 @@ importers:
       hls.js:
         specifier: ^1.5.17
         version: 1.5.17
+      ttag:
+        specifier: ^1.8.7
+        version: 1.8.7
       uplot:
         specifier: ^1.6.31
         version: 1.6.31
@@ -246,6 +249,14 @@ packages:
   butterchurn@3.0.0-beta.4:
     resolution: {integrity: sha512-hiY1ktHYHQ8MT65nnZi7GjrgZZ6sl/ipT5rBqEfaYJd90L4SvOtB6lVxtKadtzAyJo2TQJc4gJfEca4cpZo0DA==}
 
+  dedent@1.5.1:
+    resolution: {integrity: sha512-+LxW+KLWxu3HW3M2w2ympwtqPrqYRzU8fqi6Fhd18fBALe15blJPI/I4+UHveMVG6lJqB4JNd4UG0S5cnVHwIg==}
+    peerDependencies:
+      babel-plugin-macros: ^3.1.0
+    peerDependenciesMeta:
+      babel-plugin-macros:
+        optional: true
+
   ecma-proposal-math-extensions@0.0.2:
     resolution: {integrity: sha512-80BnDp2Fn7RxXlEr5HHZblniY4aQ97MOAicdWWpSo0vkQiISSE9wLR4SqxKsu4gCtXFBIPPzy8JMhay4NWRg/Q==}
 
@@ -260,8 +271,14 @@ packages:
   hls.js@1.5.17:
     resolution: {integrity: sha512-wA66nnYFvQa1o4DO/BFgLNRKnBTVXpNeldGRBJ2Y0SvFtdwvFKCbqa9zhHoZLoxHhZ+jYsj3aIBkWQQCPNOhMw==}
 
+  plural-forms@0.5.5:
+    resolution: {integrity: sha512-rJw4xp22izsfJOVqta5Hyvep2lR3xPkFUtj7dyQtpf/FbxUiX7PQCajTn2EHDRylizH5N/Uqqodfdu22I0ju+g==}
+
   regenerator-runtime@0.14.1:
     resolution: {integrity: sha512-dYnhHh0nJoMfnkZs6GmmhFknAGRrLznOu5nc9ML+EJxGvrx6H7teuevqVqCuPcPK//3eDrrjQhehXVx9cnkGdw==}
+
+  ttag@1.8.7:
+    resolution: {integrity: sha512-k9Ym8cvG7SHwikudT6GHe0Qmy1D+Ib1q87lKRQbQIGxUdHbaXgbU5p1gv2wcO5ouhjMorm/X0MvMNgr3iyI1JA==}
 
   uplot@1.6.31:
     resolution: {integrity: sha512-sQZqSwVCbJGnFB4IQjQYopzj5CoTZJ4Br1fG/xdONimqgHmsacvCjNesdGDypNKFbrhLGIeshYhy89FxPF+H+w==}
@@ -394,6 +411,8 @@ snapshots:
       ecma-proposal-math-extensions: 0.0.2
       eel-wasm: 0.0.15
 
+  dedent@1.5.1: {}
+
   ecma-proposal-math-extensions@0.0.2: {}
 
   eel-wasm@0.0.15: {}
@@ -427,6 +446,15 @@ snapshots:
 
   hls.js@1.5.17: {}
 
+  plural-forms@0.5.5: {}
+
   regenerator-runtime@0.14.1: {}
+
+  ttag@1.8.7:
+    dependencies:
+      dedent: 1.5.1
+      plural-forms: 0.5.5
+    transitivePeerDependencies:
+      - babel-plugin-macros
 
   uplot@1.6.31: {}

@@ -80,3 +80,5 @@ config :logger, Nextcast.LogStreamer,
 config :logger, :console,
   level: :info,
   metadata: [:module, :function, :line]
+
+config :gettext, :default_locale, System.get_env("LOCALE", "hr_HR")

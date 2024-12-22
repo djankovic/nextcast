@@ -25,6 +25,7 @@ defmodule Nextcast.MixProject do
     [
       {:cowboy, "~> 2.9"},
       {:ex_webrtc, "~> 0.7"},
+      {:gettext, "~> 0.26.2"},
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.6"},
       {:postgrex, "~> 0.17"},
