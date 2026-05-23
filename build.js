@@ -31,7 +31,7 @@ const context = await esbuild.context({
   treeShaking: true,
   metafile: true,
   platform: "browser",
-  target: ["safari13", "firefox68"],
+  target: ["safari16", "firefox115"],
   loader: {
     ".png": "file",
   },
