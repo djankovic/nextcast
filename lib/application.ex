@@ -30,6 +30,7 @@ defmodule Nextcast.Application do
     vsn = Application.spec(:nextcast, :vsn)
     node = node() |> Atom.to_string()
     {os_family, os_name} = :os.type()
+    locale = Gettext.get_locale()
 
     %{
       name: "Nextcast",
@@ -39,6 +40,7 @@ defmodule Nextcast.Application do
       node: node,
       os_family: os_family,
       os_name: os_name,
+      locale: String.replace(locale, "_", "-"),
     }
   end
 end
