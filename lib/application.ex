@@ -10,6 +10,8 @@ defmodule Nextcast.Application do
 
   @impl true
   def start(_type, _args) do
+    LoggerBackends.add(Nextcast.LogStreamer)
+
     children = [
       {Task.Supervisor, name: :task_sup},
       configured_spec(Nextcast.ExtendedMetadata),

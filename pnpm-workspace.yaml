@@ -1,0 +1,5 @@
+packages:
+  - 'assets'
+  - 'packages/nutt'
+allowBuilds:
+  esbuild: true
